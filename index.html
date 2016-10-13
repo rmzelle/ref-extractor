@@ -11,6 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+    <script src="libraries/mammoth.browser.min.js"></script>
 </head>
 
 <body>
@@ -26,8 +27,8 @@
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="col-sm-offset-1">
-                    <label for="formGroupExampleInput">Step 1. Select your Word file</label>
-                    <input id="formGroupExampleInput" type="file">
+                    <label for="file_upload">Step 1. Select your Word file</label>
+                    <input id="file_upload" type="file">
                     <p class="help-block">Make sure your file is in the .docx format and that "Store references in document" is enabled in the <a href="https://www.zotero.org/support/word_processor_plugin_usage">Zotero document preferences</a>.</p>
                 </div>
             </div>
@@ -36,7 +37,7 @@
                     <label>Step 2. Download or copy the extracted references</label>
                     <div>
                         <button id="download" type="button" class="btn btn-primary" disabled>Download</button>
-                        <button id="copy_to_clipboard" type="button" class="btn btn-primary" disabled>Copy to clipboard</button>
+                        <!-- <button id="copy_to_clipboard" type="button" class="btn btn-primary" disabled>Copy to clipboard</button> -->
                     </div>
                     <p id="extract_count" class="help-block">No references extracted.</p>
                 </div>
@@ -46,16 +47,7 @@
         <div id="footer"><small>Created by <a href="http://rintze.zelle.me/">Rintze M. Zelle</a>. Powered by GitHub Pages. <a href="https://github.com/rmzelle/ref-extractor">Code</a> on GitHub.</small>
         </div>
     </div>
-    <script type="text/javascript">
-        $("#download").click(download);
-
-        function download() {
-            var blob = new Blob(["Hello, world!"], {
-                type: "text/plain;charset=utf-8"
-            });
-            saveAs(blob, "hello world.txt");
-        }
-    </script>
+    <script src="libraries/ref-extractor.js"></script>
 </body>
 
 </html>
