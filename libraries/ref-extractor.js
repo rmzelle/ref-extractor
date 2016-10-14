@@ -33,6 +33,7 @@ function readFileInputEventAsArrayBuffer(event, callback) {
 function processExtractedFields(result) {
     // Isolate Zotero fields
     var zoteroFields = [];
+    var zoteroFieldIDs = [];
 
     for (var i = 0; i < extractedFields.length; i++) {
       var field = extractedFields[i].trim();
@@ -50,7 +51,12 @@ function processExtractedFields(result) {
             for (var j = 0; j < fieldObject.citationItems.length; j++) {
               var zoteroItem = fieldObject.citationItems[j];
               if (zoteroItem.hasOwnProperty("itemData")) {
-                zoteroFields.push(zoteroItem.itemData);
+                // Only save items with an id we haven't yet encountered.
+                // (this eliminates duplicate entries for items cited multiple times)
+                if (zoteroItem.itemData.hasOwnProperty("id") && zoteroFieldIDs.indexOf(zoteroItem.itemData.id) == -1 ) {
+                    zoteroFieldIDs.push(zoteroItem.itemData.id);
+                    zoteroFields.push(zoteroItem.itemData);
+                }
               }
             }
           }
