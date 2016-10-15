@@ -68,6 +68,8 @@ function processExtractedFields(result) {
     if (zoteroFields.length > 0) {
         extractedFieldsString = JSON.stringify(zoteroFields);
         
+        document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", extractedFieldsString);
+        
         if (zoteroFields.length == 1) {
             document.getElementById("extract_count").innerHTML = "1 reference extracted.";
         } else {
@@ -75,12 +77,14 @@ function processExtractedFields(result) {
         }
         
         document.getElementById("download").removeAttribute("disabled");
-        //document.getElementById("copy_to_clipboard").removeAttribute("disabled");
+        document.getElementById("copy_to_clipboard").removeAttribute("disabled");
     } else {
+        document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", "");
+        
         document.getElementById("extract_count").innerHTML = "No references extracted.";
         
-        document.getElementById("download").setAttribute("disabled", "disabled");
-        //document.getElementById("copy_to_clipboard").setAttribute("disabled");
+        document.getElementById("download").setAttribute("disabled", "true");
+        document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
     }
 }
 
@@ -89,6 +93,18 @@ document.getElementById("download").addEventListener("click", function(){
         type: "text/plain;charset=utf-8"
     });
     saveAs(blob, "ref-extracts.json");
+});
+
+var clipboard = new Clipboard('#copy_to_clipboard');
+
+// Provide some feedback on button click
+clipboard.on('success', function(e) {
+    var copyButton = document.getElementById("copy_to_clipboard");
+    var oldButtonText = copyButton.innerHTML;
+    copyButton.innerHTML = "Copied!";
+    window.setTimeout(function () {
+        copyButton.innerHTML = oldButtonText;
+    }, 2000);
 });
 
 }());
