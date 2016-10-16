@@ -25,16 +25,25 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+          <div class="col-sm-offset-1 col-sm-7">
+            <p><strong>Reference Extractor</strong> is a tool to help you recover bibliographic metadata of <a href="http://zotero.org/">Zotero</a> items from Microsoft Word documents.
+            The tool only works with Word documents stored in the <strong>.docx</strong> format.
+            The option "Store references in document" in the <a href="https://www.zotero.org/support/word_processor_plugin_usage#document_preferences">document's Zotero preferences</a> also needs to have been enabled.</p>
+            <p>The tool produces item metadata in the CSL JSON format.
+            You can either click the "Download" button and import the downloaded JSON file into Zotero via the "Import..." option in Zotero's gear menu, or click the "Copy to Clipboard" button and use the "Import from Clipboard" option in the gear menu.</p>
+          </div>
+        </div>
+        <hr>
         <form class="form-horizontal">
             <div class="form-group">
-                <div class="col-sm-offset-1">
+                <div class="col-sm-offset-2">
                     <label for="file_upload">Step 1. Select your Word file</label>
                     <input id="file_upload" type="file">
-                    <p class="help-block">Make sure your file is in the .docx format and that "Store references in document" is enabled in the <a href="https://www.zotero.org/support/word_processor_plugin_usage">Zotero document preferences</a>.</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-offset-1">
+                <div class="col-sm-offset-2">
                     <label>Step 2. Download or copy the extracted references</label>
                     <div>
                         <button id="download" type="button" class="btn btn-primary" disabled>Download</button>
