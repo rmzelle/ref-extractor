@@ -1,6 +1,6 @@
 var RefExtractor = (function() {
 
-window.extractedFieldsString = "";
+window.savedItemsString = "";
 
 // On successful file selection, extract fields with (customized) mammoth.
 // (extracted fields are stored in global "extractedFields" variable)
@@ -31,17 +31,19 @@ function readFileInputEventAsArrayBuffer(event, callback) {
 }
 
 function processExtractedFields(result) {
-    // Isolate Zotero fields
-    var zoteroFields = [];
-    var zoteroFieldIDs = [];
+    // Isolate CSL items
+    var savedItems = [];
+    var savedItemURIs = [];
 
     for (var i = 0; i < extractedFields.length; i++) {
       var field = extractedFields[i].trim();
       
-      // test if field starts with "ADDIN ZOTERO_ITEM CSL_CITATION"
-      var zoteroFieldPrefix = "ADDIN ZOTERO_ITEM CSL_CITATION";
-      if (field.startsWith(zoteroFieldPrefix)) {
-        field = field.replace(zoteroFieldPrefix,"").trim();
+      // test if field is a Zotero or Mendeley field
+      // Zotero fields are prefixed with "ADDIN ZOTERO_ITEM CSL_CITATION"
+      // Mendeley fields are prefixed with "ADDIN CSL_CITATION"
+      var cslFieldPrefix = /^ADDIN (ZOTERO_ITEM )?CSL_CITATION/;
+      if (cslFieldPrefix.test(field)) {
+        field = field.replace(cslFieldPrefix,"").trim();
         
         // parse rest of field content as JSON
         try {
@@ -49,13 +51,25 @@ function processExtractedFields(result) {
           fieldObject = JSON.parse(field);
           if (fieldObject.hasOwnProperty("citationItems")) {
             for (var j = 0; j < fieldObject.citationItems.length; j++) {
-              var zoteroItem = fieldObject.citationItems[j];
-              if (zoteroItem.hasOwnProperty("itemData")) {
-                // Only save items with an id we haven't yet encountered.
+              var item = fieldObject.citationItems[j];
+              if (item.hasOwnProperty("itemData")) {
+                // Only save items with a set of uris we haven't yet encountered.
                 // (this eliminates duplicate entries for items cited multiple times)
-                if (zoteroItem.itemData.hasOwnProperty("id") && zoteroFieldIDs.indexOf(zoteroItem.itemData.id) == -1 ) {
-                    zoteroFieldIDs.push(zoteroItem.itemData.id);
-                    zoteroFields.push(zoteroItem.itemData);
+                // Note that Zotero seems to ensure unique ids for distinct items,
+                // while Mendeley seems to restart id numbering for each citation,
+                // so it seems saver to compare uris.
+                itemHasUniqueURIs = true;
+                if (item.hasOwnProperty("uris")) {
+                  for (let k = 0; k < item.uris.length; k++) {
+                    if (savedItemURIs.indexOf(item.uris[k]) != -1 ) {
+                      itemHasUniqueURIs = false;
+                    }
+                    savedItemURIs.push(item.uris[k]);
+                  }
+                }
+                
+                if (itemHasUniqueURIs) {
+                  savedItems.push(item.itemData);
                 }
               }
             }
@@ -65,15 +79,15 @@ function processExtractedFields(result) {
       }
     }
     
-    if (zoteroFields.length > 0) {
-        extractedFieldsString = JSON.stringify(zoteroFields);
+    if (savedItems.length > 0) {
+        savedItemsString = JSON.stringify(savedItems);
         
-        document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", extractedFieldsString);
+        document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", savedItemsString);
         
-        if (zoteroFields.length == 1) {
+        if (savedItems.length == 1) {
             document.getElementById("extract_count").innerHTML = "1 reference extracted.";
         } else {
-            document.getElementById("extract_count").innerHTML = zoteroFields.length + " references extracted.";
+            document.getElementById("extract_count").innerHTML = savedItems.length + " references extracted.";
         }
         
         document.getElementById("download").removeAttribute("disabled");
@@ -89,7 +103,7 @@ function processExtractedFields(result) {
 }
 
 document.getElementById("download").addEventListener("click", function(){
-    var blob = new Blob([extractedFieldsString], {
+    var blob = new Blob([savedItemsString], {
         type: "text/plain;charset=utf-8"
     });
     saveAs(blob, "ref-extracts.json");
