@@ -12,6 +12,10 @@ Once you have successfully extracted the references from a document, the output,
 Currently, only Zotero seems to be capable of importing CSL JSON.
 Open Zotero's gear menu, and either select "Import..." and select the downloaded output file, or, if you first copied the CSL JSON to the clipboard, select "Import from Clipboard".
 
+## Developers
+
+Examples of how Zotero and Mendeley embed cited items in Word .docx documents can be seen at <https://github.com/rmzelle/ref-extractor/wiki>.
+
 ## Licensing
 
 This repository is released under the MIT license, with the exception of the [modified mammoth.js](https://github.com/rmzelle/mammoth.js) library used to parse .docx Word documents, which is released under the BSD-2-Clause license used by the original [mammoth.js](https://github.com/mwilliamson/mammoth.js) library by Michael Williamson.
