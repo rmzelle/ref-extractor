@@ -61,10 +61,11 @@ function processExtractedFields(result) {
                 itemHasUniqueURIs = true;
                 if (item.hasOwnProperty("uris")) {
                   for (let k = 0; k < item.uris.length; k++) {
-                    if (savedItemURIs.indexOf(item.uris[k]) != -1 ) {
+                    if (savedItemURIs.indexOf(item.uris[k]) == -1 ) {
+                      savedItemURIs.push(item.uris[k]);
+                    } else {
                       itemHasUniqueURIs = false;
                     }
-                    savedItemURIs.push(item.uris[k]);
                   }
                 }
                 
