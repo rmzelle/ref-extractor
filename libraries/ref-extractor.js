@@ -31,6 +31,9 @@ function readFileInputEventAsArrayBuffer(event, callback) {
 }
 
 function processExtractedFields(result) {
+    // Get rid of standard mammoth.js output (which we don't use)
+    result = null;
+
     // Isolate CSL cites
     var savedCites = [];
 
