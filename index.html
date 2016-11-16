@@ -40,13 +40,25 @@
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="col-sm-offset-2">
-                    <label for="file_upload">Step 1. Select your Word file</label>
+                    <label for="file_upload">Step 1. Settings</label>
+                    <div class="checkbox">
+                      <label>
+                        <input id="add_citation_counts_toggle" type="checkbox">
+                        Store cite counts in "note" field (number of times each item is cited in the document)
+                      </label>
+                      <p class="help-block">The "note" field appears as "Extra" in Zotero.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2">
+                    <label for="file_upload">Step 2. Select your Word file</label>
                     <input id="file_upload" type="file">
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2">
-                    <label>Step 2. Download or copy the extracted references</label>
+                    <label>Step 3. Download or copy the extracted references</label>
                     <div>
                         <button id="download" type="button" class="btn btn-primary" disabled>Download</button>
                         <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-primary" disabled>Copy to clipboard</button>
