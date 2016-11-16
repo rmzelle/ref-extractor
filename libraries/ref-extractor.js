@@ -155,8 +155,18 @@ function deduplicateCites(cites) {
       let matchingCites = [];
       matchingCites = deduplicationArray.filter(cite => cite.uris.indexOf(uri) != -1);
       
-      // Store match count
+      // Store cite count
       deduplicationArray[i].count = matchingCites.length;
+      
+      // Add cite count to item metadata, if pref is set
+      if (addCitationCounts) {
+        if (deduplicationArray[i].hasOwnProperty("item")) {
+          if (!deduplicationArray[i].item.hasOwnProperty("note")) {
+            deduplicationArray[i].item.note = "";
+          }
+          deduplicationArray[i].item.note = "Times cited: " + deduplicationArray[i].count + "\n" + deduplicationArray[i].item.note;
+        }
+      }
       
       // Mark other cites for deletion (via index property)
       for (let j = 0; j < matchingCites.length; j++) {
@@ -170,11 +180,7 @@ function deduplicateCites(cites) {
     }
   }
   
-  console.log(duplicateIndices);
-  console.log(duplicateIndices.length);
-  
-  // Actually delete items (dunn, dunn, dunnnnn)
-  console.log(cites.length);
+  // Delete duplicate items
   deduplicationArray = deduplicationArray.filter(cite => duplicateIndices.indexOf(cite.index) == -1);
   
   deduplicatedCites = [];
@@ -182,44 +188,8 @@ function deduplicateCites(cites) {
     if (deduplicationArray[i].hasOwnProperty("item")) {
       deduplicatedCites[i] = {};
       deduplicatedCites[i].itemData = deduplicationArray[i].item;
-      console.log(deduplicationArray[i].count);
     }
   }
-  console.log(deduplicatedCites.length);
-  
-  // Still need to add citation counts to items (if pref is set)!!
-  
-        // if (uniqueURIs.indexOf(itemSet.uris[j]) == -1 ) {
-        //   uniqueURIs.push(itemSet.uris[j]);
-        // } else {
-        //   itemHasUniqueURIs = false;
-        // }
-  
-    
-    
-
-  
-  // var itemURIs = [];
-  // 
-  // // Only save items with a set of uris we haven't yet encountered.
-  // // (this eliminates duplicate entries for items cited multiple times)
-  // // Note that Zotero seems to ensure unique ids for distinct items,
-  // // while Mendeley seems to restart id numbering for each citation,
-  // // so it seems saver to compare uris.
-  // itemHasUniqueURIs = true;
-  // if (item.hasOwnProperty("uris")) {
-  //   for (let k = 0; k < item.uris.length; k++) {
-  //     if (savedItemURIs.indexOf(item.uris[k]) == -1 ) {
-  //       savedItemURIs.push(item.uris[k]);
-  //     } else {
-  //       itemHasUniqueURIs = false;
-  //     }
-  //   }
-  // }
-  
-  // if (itemHasUniqueURIs) {
-  //   savedItems.push(item.itemData);
-  // }
   
   return deduplicatedCites;
 }
