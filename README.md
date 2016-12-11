@@ -2,7 +2,7 @@
 
 [Reference Extractor](http://rintze.zelle.me/ref-extractor/) is an online tool to extract Zotero and Mendeley references from Microsoft Word documents.
 This can be useful if, for instance, somebody sent you a Word document with Zotero or Mendeley references, and you'd like to add the cited items to your own reference manager.
-Or maybe you lost access to your original Zotero or Mendeley library and wish to retrieve the items you cited in your own Word documents.
+Or maybe you lost access to your original Zotero or Mendeley library and wish to retrieve the items you cited in your own Word document(s).
 
 ## Usage
 
