@@ -2,43 +2,36 @@ var RefExtractor = (function() {
 
 window.savedItemsString = "";
 
-// On successful file selection, extract fields with (customized) mammoth.
-// (extracted fields are stored in global "extractedFields" variable)
 var inputElement = document.getElementById("file_upload");
 inputElement.addEventListener("change", handleFileSelect, false);
 
 function handleFileSelect(event) {
-    window.extractedFields = [];
-    
-    readFileInputEventAsArrayBuffer(event, function(arrayBuffer) {
-        mammoth.convertToHtml({arrayBuffer: arrayBuffer})
-            .then(processExtractedFields)
-            .done();
+    var extractedFields = [];
+
+    var file = event.target.files[0];
+
+    JSZip.loadAsync(file).then(function(zip) {
+        zip.file("word/document.xml").async("string").then(function(data) {
+            var parsedDOM = new DOMParser().parseFromString(data, 'text/xml');
+            var fields = parsedDOM.getElementsByTagName("w:instrText");
+
+            for (var i = 0; i < fields.length; i++) {
+                extractedFields.push(fields[i].textContent);
+            }
+
+            processExtractedFields(extractedFields);
+        });
+    }, function(error) {
+        console.log("Error reading " + file.name + ": " + error.message);
     });
 }
 
-function readFileInputEventAsArrayBuffer(event, callback) {
-    var file = event.target.files[0];
-
-    var reader = new FileReader();
-    
-    reader.onload = function(loadEvent) {
-        var arrayBuffer = loadEvent.target.result;
-        callback(arrayBuffer);
-    };
-    
-    reader.readAsArrayBuffer(file);
-}
-
-function processExtractedFields(result) {
-    // Get rid of standard mammoth.js output (which we don't use)
-    result = null;
-
+function processExtractedFields(fields) {
     // Isolate CSL cites
     var savedCites = [];
 
-    for (var i = 0; i < extractedFields.length; i++) {
-      var field = extractedFields[i].trim();
+    for (var i = 0; i < fields.length; i++) {
+      var field = fields[i].trim();
       
       // Test if field is a Zotero or Mendeley field
       // Zotero fields are prefixed with "ADDIN ZOTERO_ITEM CSL_CITATION"

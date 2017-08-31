@@ -21,4 +21,4 @@ Examples of how Zotero and Mendeley embed cited items in Word .docx documents ca
 
 ## Licensing
 
-This repository is released under the MIT license, with the exception of the [modified mammoth.js](https://github.com/rmzelle/mammoth.js) library used to parse .docx Word documents, which is released under the BSD-2-Clause license used by the original [mammoth.js](https://github.com/mwilliamson/mammoth.js) library by Michael Williamson.
+This repository is released under the MIT license.
