@@ -22,7 +22,10 @@ function handleFileSelect(event) {
             processExtractedFields(extractedFields);
         });
     }, function(error) {
-        console.log("Error reading " + file.name + ": " + error.message);
+        document.getElementById("extract_count").innerHTML = "Error reading " + file.name;
+        
+        document.getElementById("download").setAttribute("disabled", "true");
+        document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
     });
 }
 
