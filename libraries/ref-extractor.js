@@ -9,16 +9,49 @@ function handleFileSelect(event) {
     var extractedFields = [];
 
     var file = event.target.files[0];
+    
+    function extractFields(xmlWordFile) {
+        var fields = [];
+        
+        var parsedDOM = new DOMParser().parseFromString(xmlWordFile, 'text/xml');
+        var fieldElements = parsedDOM.getElementsByTagName("w:instrText");
+
+        for (var i = 0; i < fieldElements.length; i++) {
+            fields.push(fieldElements[i].textContent);
+        }
+        
+        return(fields);
+    }
 
     JSZip.loadAsync(file).then(function(zip) {
-        zip.file("word/document.xml").async("string").then(function(data) {
-            var parsedDOM = new DOMParser().parseFromString(data, 'text/xml');
-            var fields = parsedDOM.getElementsByTagName("w:instrText");
-
-            for (var i = 0; i < fields.length; i++) {
-                extractedFields.push(fields[i].textContent);
-            }
-
+        // "word/document.xml" seems to contain "author-date" style CSL citations
+        // "word/footnotes.xml" seems to contain "note" style CSL citations
+        filesToExtract = ["word/document.xml", "word/footnotes.xml"];
+        
+        // Get file names within zip file
+        filesInZip = Object.keys(zip.files);
+        
+        // Array intersection (per https://stackoverflow.com/a/1885569/1712389) to identify which files are present
+        filesToExtract = filesInZip.filter((n) => filesToExtract.includes(n));
+        
+        // Relied on example at https://github.com/Stuk/jszip/issues/375#issuecomment-258969023 to extract multiple files
+        zipEntries = filesToExtract.map(function (name) {
+            return zip.files[name];
+        });
+        
+        var listOfPromises = zipEntries.map(function(entry) {
+            return entry.async("string").then(function (data) {
+              return extractFields(data);
+            });
+        });
+        
+        var promiseOfList = Promise.all(listOfPromises);
+        
+        promiseOfList.then(function (list) {
+            extractedFields = list.reduce(function (accumulator, current) {
+                return accumulator.concat(current);
+            }, []);
+            
             processExtractedFields(extractedFields);
         });
     }, function(error) {
