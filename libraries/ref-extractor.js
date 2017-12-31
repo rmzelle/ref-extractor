@@ -124,7 +124,7 @@ function processExtractedFields(fields) {
     
     var citeCountFeedback = "";
     if (extractedCiteCount > 0) {
-        savedItemsString = JSON.stringify(savedItems);
+        savedItemsString = JSON.stringify(savedItems, null, 2);
         
         document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", savedItemsString);
         
