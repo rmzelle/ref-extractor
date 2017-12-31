@@ -91,27 +91,44 @@ function processExtractedFields(fields) {
       }
     }
     
+    var identifiedCitesCount = savedCites.length;
     savedCites = deduplicateCites(savedCites);
-    
+    var deduplicatedCitesCount = savedCites.length;
     savedItems = extractMetadata(savedCites);
+    var extractedCiteCount = savedCites.length;
     
-    if (savedItems.length > 0) {
+    var duplicateCount = identifiedCitesCount - deduplicatedCitesCount;
+    var missingMetadataCount = deduplicatedCitesCount - extractedCiteCount;
+    
+    var citeCountFeedback = "";
+    if (extractedCiteCount > 0) {
         savedItemsString = JSON.stringify(savedItems);
         
         document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", savedItemsString);
         
-        if (savedItems.length == 1) {
-            document.getElementById("extract_count").innerHTML = "1 reference extracted.";
+        if (extractedCiteCount == 1) {
+            citeCountFeedback = "1 reference extracted.";
         } else {
-            document.getElementById("extract_count").innerHTML = savedItems.length + " references extracted.";
+            citeCountFeedback = savedItems.length + " references extracted.";
         }
+        if (duplicateCount > 0) {
+            citeCountFeedback += " (" + duplicateCount + " duplicates removed)";
+        }
+        if (missingMetadataCount > 0) {
+            citeCountFeedback += " (" + missingMetadataCount + " items without metadata)";
+        }
+        document.getElementById("extract_count").innerHTML = citeCountFeedback;
         
         document.getElementById("download").removeAttribute("disabled");
         document.getElementById("copy_to_clipboard").removeAttribute("disabled");
     } else {
         document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", "");
         
-        document.getElementById("extract_count").innerHTML = "No references extracted.";
+        citeCountFeedback = "No references extracted.";
+        if (missingMetadataCount > 0) {
+            citeCountFeedback += " (" + missingMetadataCount + " items without metadata)";
+        }
+        document.getElementById("extract_count").innerHTML = citeCountFeedback;
         
         document.getElementById("download").setAttribute("disabled", "true");
         document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
