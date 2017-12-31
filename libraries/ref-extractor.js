@@ -28,7 +28,7 @@ function handleFileSelect(event) {
     JSZip.loadAsync(file).then(function(zip) {
         // "word/document.xml" seems to contain "author-date" style CSL citations
         // "word/footnotes.xml" seems to contain "note" style CSL citations
-        filesToExtract = ["word/document.xml", "word/footnotes.xml"];
+        filesToExtract = ["word/document.xml", "word/footnotes.xml", "word/endnotes.xml"];
         
         // Get file names within zip file
         filesInZip = Object.keys(zip.files);
