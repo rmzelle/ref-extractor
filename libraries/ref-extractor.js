@@ -7,6 +7,8 @@ inputElement.addEventListener("change", handleFileSelect, false);
 
 function handleFileSelect(event) {
     var extractedFields = [];
+    document.getElementById("extract_count").innerHTML = "";
+    document.getElementById("selected_style").innerHTML = "";
 
     var file = event.target.files[0];
     
@@ -54,6 +56,26 @@ function handleFileSelect(event) {
             
             processExtractedFields(extractedFields);
         });
+        
+        // Show CSL style used in document; Currently only works for Zotero documents
+        zip.file("docProps/custom.xml").async("string").then(function(data) {
+            var parsedDOM = new DOMParser().parseFromString(data, 'text/xml');
+            var fields = parsedDOM.querySelectorAll("property[name^=ZOTERO_PREF]>*");
+
+            var zoteroPrefs = "";
+            for (var i = 0; i < fields.length; i++) {
+                zoteroPrefs += fields[i].textContent;
+            }
+            
+            if (zoteroPrefs.length > 0) {
+                parsedDOM = new DOMParser().parseFromString(zoteroPrefs, 'text/xml');
+                var selectedStyle = parsedDOM.querySelector("style[id]");
+                if (selectedStyle) {
+                    document.getElementById("selected_style").innerHTML = "CSL style ID used in document: " + selectedStyle["id"];
+                }
+            }
+        });
+
     }, function(error) {
         document.getElementById("extract_count").innerHTML = "Error reading " + file.name;
         
