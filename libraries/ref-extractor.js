@@ -16,10 +16,30 @@ function handleFileSelect(event) {
         var fields = [];
         
         var parsedDOM = new DOMParser().parseFromString(xmlWordFile, 'text/xml');
-        var fieldElements = parsedDOM.getElementsByTagName("w:instrText");
-
-        for (var i = 0; i < fieldElements.length; i++) {
-            fields.push(fieldElements[i].textContent);
+        
+        // Locate the beginning of complex fields (<w:fldChar w:fldCharType="begin"/>, child of <w:r>)
+        var complexFieldStarts = parsedDOM.querySelectorAll("*|fldChar[*|fldCharType=begin]");
+        
+        for (var i = 0; i < complexFieldStarts.length; i++) {
+            instrTextContent = "";
+            
+            // Visit sibling <w:r> elements until we hit the last one (<w:fldChar w:fldCharType="end"/>, child of <w:r>)
+            nextRun = complexFieldStarts[i].parentElement.nextSibling;
+            while (nextRun) {
+              endRun = nextRun.querySelectorAll("*|fldChar[*|fldCharType=end]");
+              if (endRun.length != 0) {
+                  break;
+              }
+              
+              // Concatenate textContents of <w:instrText/> elements within complex field
+              instrTextFields = nextRun.getElementsByTagName("w:instrText");
+              for (let i = 0; i < instrTextFields.length; i++) {
+                  instrTextContent += instrTextFields[i].textContent;
+              }
+              
+              nextRun = nextRun.nextSibling;
+            }
+            fields.push(instrTextContent);
         }
         
         return(fields);
