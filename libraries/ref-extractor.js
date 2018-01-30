@@ -5,6 +5,9 @@ window.savedItemsString = "";
 var inputElement = document.getElementById("file_upload");
 inputElement.addEventListener("change", handleFileSelect, false);
 
+var Cite = require('citation-js');
+var cite = new Cite();
+
 function handleFileSelect(event) {
     var extractedFields = [];
     document.getElementById("extract_count").innerHTML = "";
@@ -147,6 +150,7 @@ function processExtractedFields(fields) {
         savedItemsString = JSON.stringify(savedItems, null, 2);
         
         document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", savedItemsString);
+        document.getElementById("copy_to_clipboard_bibtex").setAttribute("data-clipboard-text", updateBibtex(savedItemsString));
         
         if (extractedCiteCount == 1) {
             citeCountFeedback = "1 reference extracted.";
@@ -163,8 +167,10 @@ function processExtractedFields(fields) {
         
         document.getElementById("download").removeAttribute("disabled");
         document.getElementById("copy_to_clipboard").removeAttribute("disabled");
+        document.getElementById("copy_to_clipboard_bibtex").removeAttribute("disabled");
     } else {
         document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", "");
+        document.getElementById("copy_to_clipboard_bibtex").setAttribute("data-clipboard-text", "");
         
         citeCountFeedback = "No references extracted.";
         if (missingMetadataCount > 0) {
@@ -174,6 +180,7 @@ function processExtractedFields(fields) {
         
         document.getElementById("download").setAttribute("disabled", "true");
         document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
+        document.getElementById("copy_to_clipboard_bibtex").setAttribute("disabled", "true");
     }
 }
 
@@ -298,6 +305,14 @@ function extractMetadata(items) {
   return metadataOnlyItems;
 }
 
+function updateBibtex(csl) {
+  cite.set(csl);
+  return cite.get({
+    type: 'string',
+    style: 'bibtex'
+  });
+}
+
 document.getElementById("download").addEventListener("click", function(){
     var blob = new Blob([savedItemsString], {
         type: "text/plain;charset=utf-8"
@@ -305,16 +320,18 @@ document.getElementById("download").addEventListener("click", function(){
     saveAs(blob, "ref-extracts.json");
 });
 
-var clipboard = new Clipboard('#copy_to_clipboard');
+for (let clip of ['copy_to_clipboard', 'copy_to_clipboard_bibtex']) {
+    let clipboard = new Clipboard('#' + clip);
 
-// Provide some feedback on button click
-clipboard.on('success', function(e) {
-    var copyButton = document.getElementById("copy_to_clipboard");
-    var oldButtonText = copyButton.innerHTML;
-    copyButton.innerHTML = "Copied!";
-    window.setTimeout(function () {
-        copyButton.innerHTML = oldButtonText;
-    }, 2000);
-});
+    // Provide some feedback on button click
+    clipboard.on('success', function(e) {
+        let copyButton = document.getElementById(clip);
+        let oldButtonText = copyButton.innerHTML;
+        copyButton.innerHTML = "Copied!";
+        window.setTimeout(function () {
+            copyButton.innerHTML = oldButtonText;
+        }, 2000);
+    });
+}
 
 }());
