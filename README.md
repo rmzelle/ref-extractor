@@ -7,11 +7,11 @@ Or maybe you lost access to your original Zotero or Mendeley library and wish to
 ## Usage
 
 The tool only works with Word files in the .docx format, to which references have been added through the Zotero or Mendeley word processor plugins.
-For Zotero references, the option "Store references in document" must have been checked in the Zotero document preferences, and references must be stored as "Fields", not "Bookmarks".
+For Zotero references, the option "Store references in document" must have been checked in the Zotero document preferences (Zotero 3.x and 4.x only), and references must be stored as "Fields", not "Bookmarks".
 
 ![image](https://cloud.githubusercontent.com/assets/77951/19630377/a01b9a4e-9957-11e6-8113-9e36b11724db.png)
 
-Once you have successfully extracted the references from a document, the output, in the CSL JSON format, can be either downloaded or copied to the clipboard.
+Once you have successfully extracted the references from a document, the output, in the CSL JSON or BibTeX format, can be either downloaded or copied to the clipboard.
 Currently, only Zotero seems to be capable of importing CSL JSON.
 Open Zotero's gear menu, and either select "Import..." and select the downloaded output file, or, if you first copied the CSL JSON to the clipboard, select "Import from Clipboard".
 
