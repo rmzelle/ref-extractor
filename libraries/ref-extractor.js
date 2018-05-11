@@ -2,8 +2,12 @@ var RefExtractor = (function() {
 
 window.savedItemsString = "";
 
+var Cite = require('citation-js');
+var cite = new Cite();
+
 var inputElement = document.getElementById("file_upload");
 inputElement.addEventListener("change", handleFileSelect, false);
+var outputElement = document.getElementById("output_format");
 
 function handleFileSelect(event) {
     var extractedFields = [];
@@ -299,13 +303,35 @@ function extractMetadata(items) {
 }
 
 document.getElementById("download").addEventListener("click", function(){
-    var blob = new Blob([savedItemsString], {
+    var blob = new Blob([convertOutput()], {
         type: "text/plain;charset=utf-8"
     });
-    saveAs(blob, "ref-extracts.json");
+    
+    var outputExtension = ".json";
+    if (outputElement.options[outputElement.selectedIndex].value == "bibtex") {
+      outputExtension = ".bib";
+    }
+    
+    saveAs(blob, "ref-extracts" + outputExtension);
 });
 
-var clipboard = new Clipboard('#copy_to_clipboard');
+var clipboard = new Clipboard('#copy_to_clipboard', {
+    text: function() {
+        return convertOutput();
+    }
+});
+
+function convertOutput() {
+  var csl_json = savedItemsString;
+  var outputFormat = outputElement.options[outputElement.selectedIndex].value;
+  
+  cite.set(csl_json);
+  
+  return cite.get({
+    type: "string",
+    style: outputFormat
+  });
+}
 
 // Provide some feedback on button click
 clipboard.on('success', function(e) {
