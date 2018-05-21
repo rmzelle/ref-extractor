@@ -7,7 +7,13 @@ var cite = new Cite();
 
 var inputElement = document.getElementById("file_upload");
 inputElement.addEventListener("change", handleFileSelect, false);
+
 var outputElement = document.getElementById("output_format");
+outputElement.addEventListener("change", handleFormatSelect, false);
+
+function handleFormatSelect(event) {
+    document.getElementById("textArea").value = convertOutput();
+}
 
 function handleFileSelect(event) {
     var extractedFields = [];
@@ -150,7 +156,7 @@ function processExtractedFields(fields) {
     if (extractedCiteCount > 0) {
         savedItemsString = JSON.stringify(savedItems, null, 2);
         
-        document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", savedItemsString);
+        document.getElementById("textArea").value = convertOutput();
         
         if (extractedCiteCount == 1) {
             citeCountFeedback = "1 reference extracted.";
@@ -307,9 +313,20 @@ document.getElementById("download").addEventListener("click", function(){
         type: "text/plain;charset=utf-8"
     });
     
-    var outputExtension = ".json";
-    if (outputElement.options[outputElement.selectedIndex].value == "bibtex") {
-      outputExtension = ".bib";
+    var outputExtension = "";
+    
+    switch (outputElement.options[outputElement.selectedIndex].value) {
+        case 'bibtex':
+          outputExtension = ".bib";
+          break;
+        case 'ris':
+          outputExtension = ".ris";
+          break;
+        case 'citation-apa':
+          outputExtension = ".txt";
+          break;
+        default:
+          outputExtension = ".json";
     }
     
     saveAs(blob, "ref-extracts" + outputExtension);

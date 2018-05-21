@@ -2,91 +2,97 @@
 <html>
 
 <head>
-    <title>Reference Extractor</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.4/jszip.min.js"></script>
-    <script src="https://cdn.rawgit.com/larsgw/citation.js/archive/citation.js/citation-0.3.4.min.js"></script>
+  <title>Reference Extractor</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.4/jszip.min.js"></script>
+  <script src="https://cdn.rawgit.com/larsgw/citation.js/archive/citation.js/citation-0.4.0-3.min.js"></script>
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <div class="navbar-brand">Reference Extractor</div>
-                    <div class="navbar-text">Extract Zotero and Mendeley references from Microsoft Word files</div>
-                </div>
+  <div class="container-fluid">
+    <div class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <div class="navbar-brand">Reference Extractor</div>
+        <div class="navbar-text">Extract Zotero and Mendeley references from Microsoft Word files</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-7">
+        <p><strong>Reference Extractor</strong> is a tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word <strong>.docx</strong> documents. Extracted references can
+          be saved as CSL JSON, BibTeX, RIS, or APA style.</p>
+        <p>I care about your privacy. This webpage uses your internet browser to perform the extraction, so your document never leaves your computer.</p>
+        <p>In documents created with Zotero, references must be stored as "Fields", not "Bookmarks". This can be changed for existing documents through the <a href="https://www.zotero.org/support/word_processor_plugin_usage#document_preferences">Zotero document preferences</a>.
+          References from documents last used with Zotero 3.x or 4.x can only be extracted if the "Store references in document" option was checked (this option no longer exists in Zotero 5.x, as Zotero now embeds item metadata by default).</p>
+        <p>For maximum accuracy, use the CSL JSON format, which represents a carbon copy of what's stored in your document. All other formats involve a format conversion. CSL JSON is not widely supported, but can e.g. be imported into Zotero. Just click
+          the "Download" button and import the downloaded JSON file via "Import..." in Zotero's File menu, or click the "Copy to Clipboard" button and use Zotero's "Import from Clipboard".</p>
+      </div>
+      <div class="col-sm-3">
+        <p class="bg-info">Did you find this free tool useful? Consider <a href="https://www.patreon.com/rintzezelle">supporting my open-source work on Patreon</a> for as little as $1/month, or <a href="https://www.paypal.me/RintzeZelle/2.50">buy me a coffee via PayPal</a>.<br><br>For
+          feedback, or to report any issues, please <a href="https://github.com/rmzelle/ref-extractor/issues">file an issue on GitHub</a> or ping me on <a href="https://twitter.com/rintzezelle">Twitter</a>.<br><br>This open-source tool uses a number of
+          open-source libraries, including <a href="https://twitter.com/larswillighagen">Lars Willighagen</a>'s awesome <a href="https://citation.js.org/">Citation.js</a> library for reference format conversion.</p>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-4">
+        <form autocomplete="off">
+          <div class="form-group">
+            <label for="add_citation_counts_toggle">Step 1. Settings</label>
+            <div class="checkbox">
+              <label><input id="add_citation_counts_toggle" type="checkbox" aria-describedby="helpBlock">Store cite counts in "note" field (number of times each item is cited in the document)</label>
+              <p id="helpBlock" class="help-block">The "note" field appears as "Extra" in Zotero.</p>
             </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-offset-1 col-sm-7">
-            <p><strong>Reference Extractor</strong> is a tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word <strong>.docx</strong> documents, so that they can be imported into reference management software.
-            For documents created with Zotero, the references must be stored as "Fields", not "Bookmarks" (see the <a href="https://www.zotero.org/support/word_processor_plugin_usage#document_preferences">Zotero document preferences</a>).
-            For references inserted with Zotero 3.x or 4.x, the "Store references in document" option must also have been checked.</p>
-            <p>Extracted references can be saved in the CSL JSON and BibTeX formats.
-            The CSL JSON format is lossless, and can be imported into Zotero by clicking the "Download" button and importing the downloaded JSON file via the "Import..." option in Zotero's File menu, or by clicking the "Copy to Clipboard" button and using Zotero's "Import from Clipboard" option.</p>
-            <p>I care about your privacy. With this tool, your document never leaves your computer (your internet browser performs the extraction).</p>
-            <p class="bg-info">Did you find this tool useful? <a href="https://www.patreon.com/rintzezelle">Support my open-source work on Patreon</a> for as little as $1/month, or <a href="https://www.paypal.me/RintzeZelle/2.50">buy me a coffee via PayPal</a>.
-            For feedback, or to report any issues, please <a href="https://github.com/rmzelle/ref-extractor/issues">file an issue on GitHub</a> or ping me on <a href="https://twitter.com/rintzezelle">Twitter</a>.</p>
           </div>
-        </div>
-        <hr>
-        <form class="form-horizontal">
-            <div class="form-group">
-                <div class="col-sm-offset-2">
-                    <label for="file_upload">Step 1. Settings</label>
-                    <div class="checkbox">
-                      <label>
-                        <input id="add_citation_counts_toggle" type="checkbox">
-                        Store cite counts in "note" field (number of times each item is cited in the document)
-                      </label>
-                      <p class="help-block">The "note" field appears as "Extra" in Zotero.</p>
-                    </div>
-                </div>
+          <div class="form-group">
+            <label for="file_upload">Step 2. Select your .docx Word file</label>
+            <input id="file_upload" type="file">
+          </div>
+          <div class="form-group">
+            <label for="output_format">Step 3. Select the output format</label>
+            <select id="output_format" class="form-control">
+              <option value="csl" selected>CSL JSON</option> 
+              <option value="bibtex">BibTeX</option>
+              <option value="ris">RIS</option>
+              <option value="citation-apa">Formatted citations (APA style)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="download">Step 4. Download or copy the extracted references</label>
+            <div>
+              <button id="download" type="button" class="btn btn-primary" disabled>Download</button>
+              <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-primary" disabled>Copy to clipboard</button>
             </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2">
-                    <label for="file_upload">Step 2. Select your .docx Word file</label>
-                    <input id="file_upload" type="file">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2">
-                    <label>Step 3. Select the output format</label>
-                    <p>
-                        <select id="output_format">
-                            <option value="csl" selected>CSL JSON</option> 
-                            <option value="bibtex">BibTeX</option>
-                            <!--<option value="citation-apa">Formatted citations (APA style)</option>-->
-                        </select>
-                    </p>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2">
-                    <label>Step 4. Download or copy the extracted references</label>
-                    <div>
-                        <button id="download" type="button" class="btn btn-primary" disabled>Download</button>
-                        <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-primary" disabled>Copy to clipboard</button>
-                    </div>
-                    <p id="extract_count" class="help-block"></p>
-                    <p id="selected_style" class="help-block"></p>
-                </div>
-            </div>
+            <p id="extract_count" class="help-block"></p>
+            <p id="selected_style" class="help-block"></p>
+          </div>
         </form>
-        <hr/>
+      </div>
+      <div class="col-sm-6">
+        <form autocomplete="off">
+          <div class="form-group">
+            <label for="textArea">Extracted references</label>
+            <textarea id="textArea" class="form-control" rows="15" readonly></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-sm-offset-1">
         <div id="footer"><small>Created by <a href="http://rintze.zelle.me/">Rintze M. Zelle</a>. Powered by GitHub Pages. <a href="https://github.com/rmzelle/ref-extractor">Code</a> on GitHub.</small>
         </div>
+      </div>
     </div>
-    <script src="libraries/ref-extractor.js"></script>
+  </div>
+  <script src="libraries/ref-extractor.js"></script>
 </body>
 
 </html>
