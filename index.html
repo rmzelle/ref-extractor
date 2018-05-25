@@ -20,7 +20,7 @@
     }
 
     .form-group.has-success {
-      margin-bottom: 0px;
+      margin-bottom: 5px;
     }
   </style>
 </head>
@@ -65,15 +65,6 @@
             <label for="file_upload" class="col-sm-3 control-label">[2] Select your .docx Word file</label>
             <input id="file_upload" type="file" class="adjust-top">
           </div>
-          <div class="form-group">
-            <label for="output_format" class="col-sm-3 control-label">[3] Select the output format</label>
-            <select id="output_format" class="adjust-top">
-              <option value="csl" selected>CSL JSON</option> 
-              <option value="bibtex">BibTeX</option>
-              <option value="ris">RIS</option>
-              <option value="citation-apa">Formatted citations (APA style)</option>
-            </select>
-          </div>
           <h3 class="col-sm-offset-3">Results</h3>
           <div class="form-group has-success">
             <label class="col-sm-3 control-label">No. of extracted references</label>
@@ -82,6 +73,15 @@
           <div class="form-group has-success">
             <label class="col-sm-3 control-label">CSL style selected in document</label>
             <div id="selected_style" class="form-control-static">___</div>
+          </div>
+          <div class="form-group has-success">
+            <label for="output_format" class="col-sm-3 control-label">Desired output format</label>
+            <select id="output_format" class="adjust-top">
+              <option value="csl" selected>CSL JSON</option> 
+              <option value="bibtex">BibTeX</option>
+              <option value="ris">RIS</option>
+              <option value="citation-apa">Formatted citations (APA style)</option>
+            </select>
           </div>
           <div class="form-group has-success">
             <label for="textArea" class="col-sm-3 control-label">Extracted references</label>
