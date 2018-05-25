@@ -101,7 +101,7 @@ function handleFileSelect(event) {
                 parsedDOM = new DOMParser().parseFromString(zoteroPrefs, 'text/xml');
                 var selectedStyle = parsedDOM.querySelector("style[id]");
                 if (selectedStyle) {
-                    document.getElementById("selected_style").innerHTML = "CSL style ID used in document: " + selectedStyle["id"];
+                    document.getElementById("selected_style").innerHTML = selectedStyle["id"].replace("http://www.zotero.org/styles/","");
                 }
             }
         });
@@ -159,9 +159,9 @@ function processExtractedFields(fields) {
         document.getElementById("textArea").value = convertOutput();
         
         if (extractedCiteCount == 1) {
-            citeCountFeedback = "1 reference extracted.";
+            citeCountFeedback = "1 reference extracted";
         } else {
-            citeCountFeedback = savedItems.length + " references extracted.";
+            citeCountFeedback = savedItems.length + " references extracted";
         }
         if (duplicateCount > 0) {
             citeCountFeedback += " (" + duplicateCount + " duplicates removed)";

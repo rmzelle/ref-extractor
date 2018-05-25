@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <title>Reference Extractor</title>
@@ -14,6 +14,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.4/jszip.min.js"></script>
   <script src="https://cdn.rawgit.com/larsgw/citation.js/archive/citation.js/citation-0.4.0-3.min.js"></script>
+  <style>
+    .adjust-top {
+      padding-top: 7px;
+    }
+
+    .form-group.has-success {
+      margin-bottom: 0px;
+    }
+  </style>
 </head>
 
 <body>
@@ -42,44 +51,47 @@
     </div>
     <hr>
     <div class="row">
-      <div class="col-sm-offset-1 col-sm-4">
-        <form autocomplete="off">
+      <div class="col-sm-offset-1">
+        <form class="form-horizontal" autocomplete="off">
+          <h3 class="col-sm-offset-3">Steps</h3>
           <div class="form-group">
-            <label for="add_citation_counts_toggle">Step 1. Settings</label>
-            <div class="checkbox">
-              <label><input id="add_citation_counts_toggle" type="checkbox" aria-describedby="helpBlock">Store cite counts in "note" field (number of times each item is cited in the document)</label>
-              <p id="helpBlock" class="help-block">The "note" field appears as "Extra" in Zotero.</p>
+            <label for="add_citation_counts_toggle" class="col-sm-3 control-label">[1] Settings</label>
+            <div class="checkbox col-sm-6">
+              <label><input id="add_citation_counts_toggle" type="checkbox" aria-describedby="helpBlock">Store cite counts in "note" field</label>
+              <p id="helpBlock" class="help-block">The cite count is the number of times each item is cited in the document. The "note" field appears as "Extra" in Zotero.</p>
             </div>
           </div>
           <div class="form-group">
-            <label for="file_upload">Step 2. Select your .docx Word file</label>
-            <input id="file_upload" type="file">
+            <label for="file_upload" class="col-sm-3 control-label">[2] Select your .docx Word file</label>
+            <input id="file_upload" type="file" class="adjust-top">
           </div>
           <div class="form-group">
-            <label for="output_format">Step 3. Select the output format</label>
-            <select id="output_format" class="form-control">
+            <label for="output_format" class="col-sm-3 control-label">[3] Select the output format</label>
+            <select id="output_format" class="adjust-top">
               <option value="csl" selected>CSL JSON</option> 
               <option value="bibtex">BibTeX</option>
               <option value="ris">RIS</option>
               <option value="citation-apa">Formatted citations (APA style)</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="download">Step 4. Download or copy the extracted references</label>
-            <div>
-              <button id="download" type="button" class="btn btn-primary" disabled>Download</button>
-              <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-primary" disabled>Copy to clipboard</button>
-            </div>
-            <p id="extract_count" class="help-block"></p>
-            <p id="selected_style" class="help-block"></p>
+          <h3 class="col-sm-offset-3">Results</h3>
+          <div class="form-group has-success">
+            <label class="col-sm-3 control-label">No. of extracted references</label>
+            <div id="extract_count" class="form-control-static">___</div>
           </div>
-        </form>
-      </div>
-      <div class="col-sm-6">
-        <form autocomplete="off">
-          <div class="form-group">
-            <label for="textArea">Extracted references</label>
-            <textarea id="textArea" class="form-control" rows="15" readonly></textarea>
+          <div class="form-group has-success">
+            <label class="col-sm-3 control-label">CSL style selected in document</label>
+            <div id="selected_style" class="form-control-static">___</div>
+          </div>
+          <div class="form-group has-success">
+            <label for="textArea" class="col-sm-3 control-label">Extracted references</label>
+            <div class="col-sm-7" style="padding-left:0px;">
+              <p>
+                <button id="download" type="button" class="btn btn-success" disabled>Download</button>
+                <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-success" disabled>Copy to clipboard</button>
+              </p>
+              <textarea id="textArea" class="form-control" rows="15" readonly></textarea>
+            </div>
           </div>
         </form>
       </div>
@@ -87,7 +99,7 @@
     <hr>
     <div class="row">
       <div class="col-sm-offset-1">
-        <div id="footer"><small>Created by <a href="http://rintze.zelle.me/">Rintze M. Zelle</a>. Powered by GitHub Pages. <a href="https://github.com/rmzelle/ref-extractor">Code</a> on GitHub.</small>
+        <div id="footer"><small>Created by <a href="http://rintze.zelle.me/">Rintze M. Zelle</a>. MIT-licensed. Powered by GitHub Pages. <a href="https://github.com/rmzelle/ref-extractor">Code</a> on GitHub.</small>
         </div>
       </div>
     </div>
