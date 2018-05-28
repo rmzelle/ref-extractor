@@ -87,23 +87,48 @@ function handleFileSelect(event) {
             processExtractedFields(extractedFields);
         });
         
-        // Show CSL style used in document; Currently only works for Zotero documents
+        // Show CSL style used in document
         zip.file("docProps/custom.xml").async("string").then(function(data) {
             var parsedDOM = new DOMParser().parseFromString(data, 'text/xml');
-            var fields = parsedDOM.querySelectorAll("property[name^=ZOTERO_PREF]>*");
-
-            var zoteroPrefs = "";
-            for (var i = 0; i < fields.length; i++) {
-                zoteroPrefs += fields[i].textContent;
+            var selectedCSLStyle = "";
+            
+            var selectedMendeleyCSLStyle = extractMendeleyCSLStyle(parsedDOM);
+            var selectedZoteroCSLStyle = extractZoteroCSLStyle(parsedDOM);
+            
+            // Only use delimiter if both strings have non-zero lengths; https://stackoverflow.com/a/19903533/1712389
+            selectedCSLStyle = [selectedMendeleyCSLStyle, selectedZoteroCSLStyle].filter(val => val).join(', ');
+            
+            function extractMendeleyCSLStyle(customXmlDOM) {
+              var selectedStyle = "";
+              var field = customXmlDOM.querySelector("property[name='Mendeley Recent Style Id 0_1']");
+              
+              if (field) {
+                  selectedStyle = field.firstElementChild.textContent;
+              }
+              return selectedStyle;
             }
             
-            if (zoteroPrefs.length > 0) {
-                parsedDOM = new DOMParser().parseFromString(zoteroPrefs, 'text/xml');
-                var selectedStyle = parsedDOM.querySelector("style[id]");
-                if (selectedStyle) {
-                    document.getElementById("selected_style").innerHTML = selectedStyle["id"].replace("http://www.zotero.org/styles/","");
-                }
+            function extractZoteroCSLStyle(customXmlDOM) {
+              var selectedStyle = "";
+              var fields = customXmlDOM.querySelectorAll("property[name^=ZOTERO_PREF]>*");
+
+              var zoteroPrefs = "";
+              for (var i = 0; i < fields.length; i++) {
+                  zoteroPrefs += fields[i].textContent;
+              }
+              
+              if (zoteroPrefs.length > 0) {
+                  var lpwstrDOM = new DOMParser().parseFromString(zoteroPrefs, 'text/xml');
+                  var selectedStyleNode = lpwstrDOM.querySelector("style[id]");
+                  if (selectedStyleNode) {
+                      selectedStyle = selectedStyleNode["id"];
+                  }
+              }
+              return selectedStyle;
             }
+            
+            document.getElementById("selected_style").innerHTML = selectedCSLStyle.replace("http://www.zotero.org/styles/","");
+
         });
 
     }, function(error) {
