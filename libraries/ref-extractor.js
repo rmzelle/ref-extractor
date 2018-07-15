@@ -3,7 +3,6 @@ var RefExtractor = (function() {
 window.savedItemsString = "";
 
 var Cite = require('citation-js');
-var cite = new Cite();
 
 var inputElement = document.getElementById("file_upload");
 inputElement.addEventListener("change", handleFileSelect, false);
@@ -367,12 +366,9 @@ function convertOutput() {
   var csl_json = savedItemsString;
   var outputFormat = outputElement.options[outputElement.selectedIndex].value;
   
-  cite.set(csl_json);
+  let citationRender = new Cite(csl_json);
   
-  return cite.get({
-    type: "string",
-    style: outputFormat
-  });
+  return citationRender.format(outputFormat);
 }
 
 // Provide some feedback on button click
