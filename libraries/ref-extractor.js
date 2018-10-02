@@ -356,7 +356,7 @@ document.getElementById("download").addEventListener("click", function(){
     saveAs(blob, "ref-extracts" + outputExtension);
 });
 
-var clipboard = new Clipboard('#copy_to_clipboard', {
+var clipboard = new ClipboardJS('#copy_to_clipboard', {
     text: function() {
         return convertOutput();
     }
