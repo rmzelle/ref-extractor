@@ -136,6 +136,8 @@ function handleFileSelect(event) {
         
         document.getElementById("download").setAttribute("disabled", "true");
         document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
+        document.getElementById("zotero_item_selection_link").removeAttribute("href");
+        document.getElementById("zotero_item_selection_link").setAttribute("disabled", "true");
     });
 }
 
@@ -209,6 +211,14 @@ function processExtractedFields(fields) {
         
         document.getElementById("download").setAttribute("disabled", "true");
         document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
+    }
+    if (savedZoteroSelectionString.length != 0) {
+      document.getElementById("zotero_item_selection_link").setAttribute("href", savedZoteroSelectionString);
+      document.getElementById("zotero_item_selection_link").removeAttribute("disabled");
+      savedZoteroSelectionString = "";
+    } else {
+      document.getElementById("zotero_item_selection_link").removeAttribute("href");
+      document.getElementById("zotero_item_selection_link").setAttribute("disabled", "true");
     }
 }
 
@@ -341,8 +351,10 @@ function extractMetadata(items) {
     }
   }
   
-  // Example of Zotero item selection string: zotero://select/library/items?itemKey=ABCD2345,BCDE9876
-  savedZoteroSelectionString = "zotero://select/library/items?itemKey=" + zoteroItemKeys.join(",");
+  if (zoteroItemKeys.length > 0) {
+    // Example of Zotero item selection string: zotero://select/library/items?itemKey=ABCD2345,BCDE9876
+    savedZoteroSelectionString = "zotero://select/library/items?itemKey=" + zoteroItemKeys.join(",");
+  }
   
   return metadataOnlyItems;
 }
