@@ -1,6 +1,7 @@
 var RefExtractor = (function() {
 
 window.savedItemsString = "";
+window.savedZoteroSelectionString = "";
 
 var Cite = require('citation-js');
 
@@ -135,6 +136,8 @@ function handleFileSelect(event) {
         
         document.getElementById("download").setAttribute("disabled", "true");
         document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
+        document.getElementById("zotero_item_selection_link").removeAttribute("href");
+        document.getElementById("zotero_item_selection_link").setAttribute("disabled", "true");
     });
 }
 
@@ -170,7 +173,7 @@ function processExtractedFields(fields) {
     var identifiedCitesCount = savedCites.length;
     savedCites = deduplicateCites(savedCites);
     var deduplicatedCitesCount = savedCites.length;
-    savedItems = extractMetadata(savedCites);
+    savedCites = extractMetadata(savedCites);
     var extractedCiteCount = savedCites.length;
     
     var duplicateCount = identifiedCitesCount - deduplicatedCitesCount;
@@ -178,14 +181,14 @@ function processExtractedFields(fields) {
     
     var citeCountFeedback = "";
     if (extractedCiteCount > 0) {
-        savedItemsString = JSON.stringify(savedItems, null, 2);
+        savedItemsString = JSON.stringify(savedCites, null, 2);
         
         document.getElementById("textArea").value = convertOutput();
         
         if (extractedCiteCount == 1) {
             citeCountFeedback = "1 reference extracted";
         } else {
-            citeCountFeedback = savedItems.length + " references extracted";
+            citeCountFeedback = savedCites.length + " references extracted";
         }
         if (duplicateCount > 0) {
             citeCountFeedback += " (" + duplicateCount + " duplicates removed)";
@@ -208,6 +211,14 @@ function processExtractedFields(fields) {
         
         document.getElementById("download").setAttribute("disabled", "true");
         document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
+    }
+    if (savedZoteroSelectionString.length != 0) {
+      document.getElementById("zotero_item_selection_link").setAttribute("href", savedZoteroSelectionString);
+      document.getElementById("zotero_item_selection_link").removeAttribute("disabled");
+      savedZoteroSelectionString = "";
+    } else {
+      document.getElementById("zotero_item_selection_link").removeAttribute("href");
+      document.getElementById("zotero_item_selection_link").setAttribute("disabled", "true");
     }
 }
 
@@ -313,6 +324,7 @@ function deduplicateCites(cites) {
     if (deduplicationArray[i].hasOwnProperty("item")) {
       deduplicatedCites[i] = {};
       deduplicatedCites[i].itemData = deduplicationArray[i].item;
+      deduplicatedCites[i].uris = deduplicationArray[i].uris;
     }
   }
   
@@ -321,12 +333,27 @@ function deduplicateCites(cites) {
 
 function extractMetadata(items) {
   metadataOnlyItems = [];
+  zoteroItemKeys = [];
   
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
     if (item.hasOwnProperty("itemData")) {
       metadataOnlyItems.push(item.itemData);
     }
+    
+    if (item.hasOwnProperty("uris")) {
+      
+      for (let j = 0; j < item.uris.length; j++) {
+        if (item.uris[j].includes("http://zotero.org/")) {
+          zoteroItemKeys.push(item.uris[j].split("/").pop());
+        }
+      }
+    }
+  }
+  
+  if (zoteroItemKeys.length > 0) {
+    // Example of Zotero item selection string: zotero://select/library/items?itemKey=ABCD2345,BCDE9876
+    savedZoteroSelectionString = "zotero://select/library/items?itemKey=" + zoteroItemKeys.join(",");
   }
   
   return metadataOnlyItems;
