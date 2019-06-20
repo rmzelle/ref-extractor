@@ -373,7 +373,7 @@ document.getElementById("download").addEventListener("click", function(){
         case 'ris':
           outputExtension = ".ris";
           break;
-        case 'citation-apa':
+        case 'bibliography':
           outputExtension = ".txt";
           break;
         default:
