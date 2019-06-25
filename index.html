@@ -88,12 +88,15 @@
           <div class="form-group has-success">
             <label for="textArea" class="col-sm-3 control-label">Extracted references</label>
             <div class="col-sm-7" style="padding-left:0px;">
-              <p>
-                <button id="download" type="button" class="btn btn-success" disabled>Download</button>
-                <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-success" disabled>Copy to clipboard</button>
-                <a id="zotero_item_selection_link" type="button" class="btn btn-default" disabled>Select cited items in Zotero</a>
-              </p>
-              <textarea id="textArea" class="form-control" rows="15" readonly></textarea>
+              <button id="download" type="button" class="btn btn-success" disabled>Download</button>
+              <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-success" disabled>Copy to clipboard</button>
+              <div class="btn-group">
+                <button id="zotero_item_selection_button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                  Select cited items in Zotero <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" id="zotero_item_selection_link_list"/>
+              </div>
+              <textarea id="textArea" class="form-control" rows="15" readonly style="margin-top: 10px;"></textarea>
             </div>
           </div>
         </form>

@@ -1,7 +1,7 @@
 var RefExtractor = (function() {
 
 window.savedItemsString = "";
-window.savedZoteroSelectionString = "";
+window.savedZoteroLibrarySelectors = {};
 
 var Cite = require('citation-js');
 
@@ -136,8 +136,8 @@ function handleFileSelect(event) {
         
         document.getElementById("download").setAttribute("disabled", "true");
         document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
-        document.getElementById("zotero_item_selection_link").removeAttribute("href");
-        document.getElementById("zotero_item_selection_link").setAttribute("disabled", "true");
+        document.getElementById("zotero_item_selection_button").setAttribute("disabled", "true");
+        document.getElementById("textArea").value = "";
     });
 }
 
@@ -211,14 +211,22 @@ function processExtractedFields(fields) {
         
         document.getElementById("download").setAttribute("disabled", "true");
         document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
+        document.getElementById("textArea").value = "";
     }
-    if (savedZoteroSelectionString.length != 0) {
-      document.getElementById("zotero_item_selection_link").setAttribute("href", savedZoteroSelectionString);
-      document.getElementById("zotero_item_selection_link").removeAttribute("disabled");
-      savedZoteroSelectionString = "";
+    
+    let linkList = document.getElementById("zotero_item_selection_link_list");
+    while (linkList.firstChild) {
+      linkList.removeChild(linkList.firstChild);
+    }
+    if (Object.keys(savedZoteroLibrarySelectors).length > 0) {
+      for (var selector in savedZoteroLibrarySelectors) {
+        var selectorText = "Select " + savedZoteroLibrarySelectors[selector].items.length + " item(s) for " + savedZoteroLibrarySelectors[selector].type.slice(0, -1) + " library " + savedZoteroLibrarySelectors[selector].subID;
+        linkList.insertAdjacentHTML("beforeend", "<li><a href='" + savedZoteroLibrarySelectors[selector].selectionString + "'>" + selectorText + "</a></li>");
+      }
+      document.getElementById("zotero_item_selection_button").removeAttribute("disabled");
+      savedZoteroLibrarySelectors = {};
     } else {
-      document.getElementById("zotero_item_selection_link").removeAttribute("href");
-      document.getElementById("zotero_item_selection_link").setAttribute("disabled", "true");
+      document.getElementById("zotero_item_selection_button").setAttribute("disabled", "true");
     }
 }
 
@@ -342,18 +350,61 @@ function extractMetadata(items) {
     }
     
     if (item.hasOwnProperty("uris")) {
-      
       for (let j = 0; j < item.uris.length; j++) {
         if (item.uris[j].includes("http://zotero.org/")) {
-          zoteroItemKeys.push(item.uris[j].split("/").pop());
+          zoteroItemKeys.push(item.uris[j]);
         }
       }
     }
   }
   
-  if (zoteroItemKeys.length > 0) {
-    // Example of Zotero item selection string: zotero://select/library/items?itemKey=ABCD2345,BCDE9876
-    savedZoteroSelectionString = "zotero://select/library/items?itemKey=" + zoteroItemKeys.join(",");
+  if (zoteroItemKeys.length > 0) {    
+    var libraries = {};
+    
+    // Split keys over libraries (user library, group library/libraries)
+    for (let i = 0; i < zoteroItemKeys.length; i++) {
+      if (zoteroItemKeys[i].includes("zotero.org")) {
+        var itemSelectorFields = [];
+        var itemSelectionInfo = {};
+        itemSelectorFields = zoteroItemKeys[i].split("/");
+        
+        // Examples of split item URIs
+        // [ "http:", "", "zotero.org", "users", "1386342", "items", "TANS5GUE" ]
+        // [ "http:", "", "zotero.org", "groups", "227594", "items", "2TK9HDKD" ]
+        if (itemSelectorFields.length == 7) {
+          itemSelectionInfo.libraryType = itemSelectorFields[3];
+          itemSelectionInfo.librarySubID = itemSelectorFields[4];
+          itemSelectionInfo.itemKey = itemSelectorFields[6];
+          
+          var libraryURL = ["https://www.zotero.org", itemSelectionInfo.libraryType, itemSelectionInfo.librarySubID].join("/");
+          
+          // store item info within library collection
+          if (libraries.hasOwnProperty(libraryURL)) {
+            libraries[libraryURL].items.push(itemSelectionInfo.itemKey);
+          } else {
+            libraries[libraryURL] = {};
+            libraries[libraryURL].items = [itemSelectionInfo.itemKey];
+            libraries[libraryURL].type = itemSelectionInfo.libraryType;
+            libraries[libraryURL].subID = itemSelectionInfo.librarySubID;          
+          }
+        }
+      }
+    }
+    
+    for (var library in libraries) {
+      switch (libraries[library].type) {
+        case "users":
+          // Example of Zotero user library item selection string: zotero://select/library/items?itemKey=ABCD2345,BCDE9876
+          libraries[library].selectionString = "zotero://select/library/items?itemKey=" + libraries[library].items.join(",");
+          break;
+        case "groups":
+          // Example of Zotero group library item selection string: zotero://select/groups/227594/items?itemKey=2TK9HDKD
+          libraries[library].selectionString = "zotero://select/groups/" + libraries[library].subID + "/items?itemKey=" + libraries[library].items.join(",");
+          break;
+      }
+    }
+    
+    savedZoteroLibrarySelectors = libraries;
   }
   
   return metadataOnlyItems;
