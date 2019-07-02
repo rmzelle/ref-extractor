@@ -37,18 +37,34 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-7">
-        <p><strong>Reference Extractor</strong> is a tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word <strong>.docx</strong> documents. Extracted references can
-          be saved as CSL JSON, BibTeX, RIS, or APA style.</p>
-        <p>I care about your privacy. This webpage uses your internet browser to perform the extraction, so your document never leaves your computer.</p>
-        <p>In documents created with Zotero, references must be stored as "Fields", not "Bookmarks". This can be changed for existing documents through the <a href="https://www.zotero.org/support/word_processor_plugin_usage#document_preferences">Zotero document preferences</a>.
-          References from documents last used with Zotero 3.x or 4.x can only be extracted if the "Store references in document" option was checked (this option no longer exists in Zotero 5.x, as Zotero now embeds item metadata by default).</p>
-        <p>For maximum accuracy, use the CSL JSON format, which represents a carbon copy of what's stored in your document. All other formats involve a format conversion. CSL JSON is not widely supported, but can e.g. be imported into Zotero. Just click
-          the "Download" button and import the downloaded JSON file via "Import..." in Zotero's File menu, or click the "Copy to Clipboard" button and use Zotero's "Import from Clipboard".</p>
+        <p><strong>Reference Extractor</strong> is a free open-source webtool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word <strong>.docx</strong> documents.
+          It has two main features:
+          <ul>
+            <li>Extracted references can be saved in CSL JSON, BibTeX, or RIS format for import into a reference manager like Zotero or Mendeley, or they can be rendered as formatted citations in APA style.</li>
+            <li>If you have access to the Zotero libraries from which the items were cited, this tool allows you to select the original items in Zotero.</li>
+          </ul>
+          Your privacy is important to me. I built this tool to operate entirely client-side, and your documents never leave your computer. No snooping, no tracking, no ads.
+        </p>
+        <h5>Tips on use</h5>
+        <ul>
+          <li>Zotero references are only detected if they have been stored as "Fields", not "Bookmarks".
+            This can be changed for existing documents through the <a href="https://www.zotero.org/support/word_processor_plugin_usage#document_preferences">Zotero document preferences</a>.</li>
+          <li>Zotero references from documents last used with Zotero 3.x or 4.x can only be extracted if the "Store references in document" option was checked.
+            This option no longer exists in Zotero 5.x, which always embeds item metadata.</li>
+          <li>If you want to import extracted references, use the CSL JSON output format for best results.
+            This is the format used by Zotero and Mendeley to embed item metadata in Word documents.
+            All other output formats involve a format conversion.
+            Note that while Zotero can import CSL JSON files, support for this format is otherwise limited.
+          <li>Zotero offers easy import via its File menu, with an "Import..." option for downloaded CSL JSON, BibTeX, or RIS files, and an "Import from Clipboard" option if you use the "Copy to Clipboard" button of this tool.</li>
+        </ul>
       </div>
       <div class="col-sm-3">
-        <p class="bg-info">Did you find this free tool useful? Consider <a href="https://www.patreon.com/rintzezelle">supporting my open-source work on Patreon</a> for as little as $1/month, or <a href="https://www.paypal.me/RintzeZelle/2.50">buy me a coffee via PayPal</a>.<br><br>For
-          feedback, or to report any issues, please <a href="https://github.com/rmzelle/ref-extractor/issues">file an issue on GitHub</a> or ping me on <a href="https://twitter.com/rintzezelle">Twitter</a>.<br><br>This open-source tool uses a number of
-          open-source libraries, including <a href="https://twitter.com/larswillighagen">Lars Willighagen</a>'s awesome <a href="https://citation.js.org/">Citation.js</a> library for reference format conversion.</p>
+        <p class="bg-info">Did you find this free tool useful?
+          Please support my open-source work, e.g. by <a href="https://www.paypal.me/RintzeZelle/2.50">buying me a coffee via PayPal</a> or with a <a href="https://www.patreon.com/rintzezelle">monthly donation via Patreon</a>.
+          <br><br>
+          For feedback, or to report any issues, please <a href="https://github.com/rmzelle/ref-extractor/issues">file an issue on GitHub</a> or ping me on <a href="https://twitter.com/rintzezelle">Twitter</a>.
+          <br><br>
+          This tool uses the open-source <a href="https://citation.js.org/">Citation.js</a> JavaScript library for reference format conversion.</p>
       </div>
     </div>
     <hr>
