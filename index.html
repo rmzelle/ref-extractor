@@ -18,6 +18,10 @@
     .adjust-top {
       padding-top: 7px;
     }
+    
+    .nav-tabs {
+      margin-bottom: 15px;
+    }
 
     .form-group.has-success {
       margin-bottom: 5px;
@@ -37,26 +41,66 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-7">
-        <p><strong>Reference Extractor</strong> is a free open-source webtool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word <strong>.docx</strong> documents.
-          It has two main features:
-          <ul>
-            <li>Extracted references can be saved in CSL JSON, BibTeX, or RIS format for import into a reference manager like Zotero or Mendeley, or they can be rendered as formatted citations in APA style.</li>
-            <li>If you have access to the Zotero libraries from which the items were cited, this tool allows you to select the original items in Zotero.</li>
+        <div>
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+            <li role="presentation"><a href="#generalTips" aria-controls="generalTips" role="tab" data-toggle="tab">General tips</a></li>
+            <li role="presentation"><a href="#zoteroTips" aria-controls="zoteroTips" role="tab" data-toggle="tab">Zotero tips</a></li>
+            <li role="presentation"><a href="#troubleshooting" aria-controls="troubleshooting" role="tab" data-toggle="tab">Troubleshooting</a></li>
           </ul>
-          Your privacy is important to me. I built this tool to operate entirely client-side, and your documents never leave your computer. No snooping, no tracking, no ads.
-        </p>
-        <h5>Tips on use</h5>
-        <ul>
-          <li>Zotero references are only detected if they have been stored as "Fields", not "Bookmarks".
-            This can be changed for existing documents through the <a href="https://www.zotero.org/support/word_processor_plugin_usage#document_preferences">Zotero document preferences</a>.</li>
-          <li>Zotero references from documents last used with Zotero 3.x or 4.x can only be extracted if the "Store references in document" option was checked.
-            This option no longer exists in Zotero 5.x, which always embeds item metadata.</li>
-          <li>If you want to import extracted references, use the CSL JSON output format for best results.
-            This is the format used by Zotero and Mendeley to embed item metadata in Word documents.
-            All other output formats involve a format conversion.
-            Note that while Zotero can import CSL JSON files, support for this format is otherwise limited.
-          <li>Zotero offers easy import via its File menu, with an "Import..." option for downloaded CSL JSON, BibTeX, or RIS files, and an "Import from Clipboard" option if you use the "Copy to Clipboard" button of this tool.</li>
-        </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="home">
+              <strong>Reference Extractor</strong> is a free tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word <strong>.docx</strong> documents.
+                With this tool, you can:
+              <ul>
+                <li>Extract references and save them in CSL JSON, BibTeX, or RIS format, or as a bibliography in APA style
+                  <ul>
+                    <li>This feature can be useful if you e.g. lost your Zotero/Mendeley library but still have your Word documents.
+                      Or perhaps somebody sent you a Word document and you would like to get the cited items into your own reference manager library.</li>
+                  </ul>
+                </li>
+                <li>Select the original cited items in your existing Zotero libraries. [available for Zotero only]
+                  <ul>
+                    <li>Once items are selected in Zotero, you can drag the items into a new collection or apply a tag.</li>
+                  </ul>
+                </li>
+                <li>Discover how many times each item has been cited.</li>
+                <li>See which Citation Style Language citation style was used in the Word document.</li>
+              </ul>
+              I care about your privacy. Reference Extractor does all its work on your computer in your browser, and your documents are never sent across the internet. No snooping, no tracking, no ads.
+            </div>
+            <div role="tabpanel" class="tab-pane" id="generalTips">
+              <p>Few reference managers can import CSL JSON files, but it's the most accurate output format Reference Extractor can generate, as it is the same format used by Zotero and Mendeley to embed item metadata in Word documents.
+                All other output formats involve a format conversion.
+                If you discover issues with the RIS or BibTeX output formats, you can try importing the CSL JSON files into Zotero and use Zotero to convert the reference to the desired output format.
+              </p>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="zoteroTips">
+              <ul>
+                <li>Zotero references are only detected if they have been stored as "Fields", not "Bookmarks".
+                  This can be changed for existing documents through the <a href="https://www.zotero.org/support/word_processor_plugin_usage#document_preferences">Zotero document preferences</a>.</li>
+                <li>Zotero references from documents last used with Zotero 3.x or 4.x can only be extracted if the "Store references in document" option was checked.
+                  This option no longer exists in Zotero 5.x, which always embeds item metadata.</li>
+                <li>Zotero offers easy import via its File menu, with an "Import..." option for downloaded CSL JSON, BibTeX, or RIS files, and an "Import from Clipboard" option if you use the "Copy to Clipboard" button of this tool.</li>
+              </ul>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="troubleshooting">
+              If Reference Extractor doesn't work as expected, you can try the following:
+              <ul>
+                <li>Make sure your Word document has been saved in the ".docx" format</li>
+                <li>Make sure your Word document contains 'active' Zotero or Mendeley citations.
+                  Active citations should have a grey background, and pressing Alt+F9 in Word should toggle them to show or hide their field codes.
+                  Inactive citations have a white background and look like regular text.
+                <li>Try a different browser, like Firefox or Google Chrome</li>
+                <li>If you have JavaScript disabled (e.g. by using a browser extension like NoScript), enable JavaScript for this webpage</li>
+              </ul>
+              If you're still stuck, don't hesitate to reach out for assistance.
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-sm-3">
         <p class="bg-info">Did you find this free tool useful?
@@ -110,7 +154,7 @@
                 <button id="zotero_item_selection_button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
                   Select cited items in Zotero <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" id="zotero_item_selection_link_list"/>
+                <ul class="dropdown-menu" id="zotero_item_selection_link_list"></ul>
               </div>
               <textarea id="textArea" class="form-control" rows="15" readonly style="margin-top: 10px;"></textarea>
             </div>
