@@ -24,7 +24,9 @@ Reference extractor allows you to:
 ## Tips for use
 
 Once you have successfully extracted the references from a document, the output, as CSL JSON, BibTeX, RIS or formatted APA bibliography, can be either downloaded or copied to the clipboard.
+
 The format with highest fidelity is CSL JSON, however, currently only Zotero seems capable of importing CSL JSON.
+
 To import CSL JSON into Zotero, open Zotero's File menu, and either select "Import..." and select the downloaded output file, or, if you first copied the CSL JSON to the clipboard, select "Import from Clipboard".
 
 ## Support
@@ -34,7 +36,7 @@ I also care about your privacy.
 Reference Extractor does all its work on your own computer, and your documents are never sent across the internet.
 No snooping, no tracking, no ads.
 
-If you found this tool useful, please support this project by starring this GitHub repository, or by giving a small donation via e.g. PayPal (see the Sponsor button at the top of this repository).
+If you found this tool useful, please support this project by starring this GitHub repository, or by giving a small donation via e.g. [PayPal](https://www.paypal.me/RintzeZelle/2.50) (see also the Sponsor button at the top of this repository).
 
 ## Troubleshooting
 
