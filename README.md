@@ -1,6 +1,6 @@
-# Reference Extractor
-
 ![License](https://img.shields.io/github/license/rmzelle/ref-extractor)
+
+# Reference Extractor
 
 [Reference Extractor](https://rintze.zelle.me/ref-extractor/) is a free online tool to extract [Zotero](https://www.zotero.org/) and [Mendeley](https://www.mendeley.com/) references from Microsoft Word .docx documents.
 It only works with *active* citations that have been inserted through the Zotero or Mendeley word processor plugins, and that haven't been converted to plain text.
@@ -62,6 +62,16 @@ To report issues or feature requests, please [file a GitHub issue](https://githu
 Examples of how Zotero and Mendeley embed cited items in Word .docx documents can be seen at <https://github.com/rmzelle/ref-extractor/wiki>.
 
 Reference Extractor uses the [Citation.js](https://citation.js.org/) JavaScript library for reference format conversion.
+
+## Testimonials
+
+Reference Extractor has been recommended by the following institutions:
+
+* [Zotero](https://twitter.com/zotero/status/1161310683109253121)
+* [Berkeley Library](https://update.lib.berkeley.edu/2018/02/07/extracting-references-from-an-already-created-bibliography/)
+* [Bibliothèque Universitaire Paris Nanterre](https://twitter.com/BUNanterre/status/953527431838752769)
+* [Caltech Library](https://libanswers.caltech.edu/faq/204009)
+* [Washington State University Libraries](https://libguides.libraries.wsu.edu/c.php?g=768677&p=5514182)
 
 ## Licensing
 
