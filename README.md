@@ -40,18 +40,24 @@ If you found this tool useful, please support this project by starring this GitH
 
 ## Troubleshooting
 
-* If Reference Extractor doesn't find any items in your Word document, there are several possible causes:
-  * The citations in the Word document might not (or no longer) be [active field codes](https://www.zotero.org/support/kb/word_field_codes).
-  Active field codes have grey shading by default.
-  You can also confirm citations are active by toggling the field codes by pressing <kbd>Alt</kbd>+<kbd>F9</kbd> or <kbd>Option</kbd>+<kbd>F9</kbd> Alt/Option-F9 (or Option-Fn-F9) in Word.
+If Reference Extractor doesn't work or find any items in your Word document, there are several possible causes:
+
+* Make sure your Word document has been saved in the ".docx" format
+* Try a different browser, like Firefox or Google Chrome
+* If you have JavaScript disabled (e.g. by using a browser extension like [NoScript](https://noscript.net/)), enable JavaScript for this webpage
+* The citations in the Word document might not (or no longer) be [active field codes](https://www.zotero.org/support/kb/word_field_codes).
+  Active field codes have grey shading by default, while inactive citations have white shading and look and behave like regular text.
+  You can also confirm citations are active by toggling the field codes by pressing <kbd>Alt</kbd>+<kbd>F9</kbd> or <kbd>Option</kbd>+<kbd>F9</kbd> in Word.
   After pressing this shortcut, active Zotero and Mendeley field codes will expand and show the embedded citation metadata.
   Toggled Zotero fields start with "ADDIN ZOTERO_ITEM CSL_CITATION", and toggled Mendeley fields start with "ADDIN CSL_CITATION".
-  * The citations in the Word document have been inserted with a different reference manager.
-* For older Word documents with Zotero references, note that Zotero [started](https://github.com/zotero/zotero-word-for-windows-integration/issues/30#issuecomment-285073023) offering embedded metadata in 2012 with Zotero 3.0.
-  For Zotero 3.x and 4.x, extraction is only possible if the option "Store references in document" was checked in the Zotero document preferences.
+* The citations in the Word document have been inserted with a different reference manager.
+* [Zotero] For older Word documents with Zotero references, note that Zotero [started](https://github.com/zotero/zotero-word-for-windows-integration/issues/30#issuecomment-285073023) offering embedded metadata in 2012 with Zotero 3.0.
+  Documents last updated with earlier versions of Zotero don't contain extractable citations.
+  For documents last updated with Zotero 3.x and 4.x, extraction is only possible if the option "Store references in document" was checked in the Zotero document preferences.
   Zotero 5.x always embeds item metadata.
-* For Word documents with Zotero references, references must be stored as "Fields", not "Bookmarks".
-* https://www.zotero.org/support/kb/importing_formatted_bibliographies describes several alternative methods that work with e.g. plain text citations.
+* [Zotero] For Word documents with Zotero references, references must be stored as "Fields", not "Bookmarks".
+
+If you can't find a solution, https://www.zotero.org/support/kb/importing_formatted_bibliographies describes several alternative methods that e.g. work with plain text citations.
 
 ## Getting help
 
