@@ -23,11 +23,14 @@ Reference extractor allows you to:
 
 ## Tips for use
 
-Once you have successfully extracted the references from a document, the output, as CSL JSON, BibTeX, RIS or formatted APA bibliography, can be either downloaded or copied to the clipboard.
+Once you have successfully extracted the references from a document, the output, as CSL JSON, BibTeX, RIS, or formatted APA bibliography, can be either downloaded or copied to the clipboard.
 
-The format with highest fidelity is CSL JSON, however, currently only Zotero seems capable of importing CSL JSON.
+To import a downloaded CSL JSON, BibTeX, or RIS file into Zotero, open Zotero's File menu, select "Import..." and select the downloaded output file.
+Or, if you used the "Copy to clipboard" button of this tool, select "Import from Clipboard".
 
-To import CSL JSON into Zotero, open Zotero's File menu, and either select "Import..." and select the downloaded output file, or, if you first copied the CSL JSON to the clipboard, select "Import from Clipboard".
+The format with highest fidelity is CSL JSON, as this is the format used by Zotero and Mendeley to embed item metadata in Word documents.
+All other output formats involve a format conversion.
+If you discover issues with the BibTeX or RIS output formats, but need a format other than CSL JSON, try importing the CSL JSON file into Zotero, and then use Zotero to convert the references to the desired output format.
 
 ## Support
 
@@ -55,7 +58,7 @@ If Reference Extractor doesn't work or find any items in your Word document, the
   Documents last updated with earlier versions of Zotero don't contain extractable citations.
   For documents last updated with Zotero 3.x and 4.x, extraction is only possible if the option "Store references in document" was checked in the Zotero document preferences.
   Zotero 5.x always embeds item metadata.
-* [Zotero] For Word documents with Zotero references, references must be stored as "Fields", not "Bookmarks".
+* [Zotero] For Word documents with Zotero references, references must be stored as "Fields", not "Bookmarks".  This can be changed for existing documents through the [Zotero document preferences](https://www.zotero.org/support/word_processor_plugin_usage#document_preferences).
 
 If you can't find a solution, https://www.zotero.org/support/kb/importing_formatted_bibliographies describes several alternative methods that e.g. work with plain text citations.
 
