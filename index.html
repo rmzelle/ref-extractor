@@ -19,10 +19,6 @@
       padding-top: 7px;
     }
     
-    .nav-tabs {
-      margin-bottom: 15px;
-    }
-
     .form-group.has-success {
       margin-bottom: 5px;
     }
@@ -42,78 +38,30 @@
     <div class="row">
       <div class="col-sm-offset-1 col-sm-7">
         <div>
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-            <li role="presentation"><a href="#generalTips" aria-controls="generalTips" role="tab" data-toggle="tab">General tips</a></li>
-            <li role="presentation"><a href="#zoteroTips" aria-controls="zoteroTips" role="tab" data-toggle="tab">Zotero tips</a></li>
-            <li role="presentation"><a href="#troubleshooting" aria-controls="troubleshooting" role="tab" data-toggle="tab">Troubleshooting</a></li>
-            <li role="presentation"><a href="#testimonials" aria-controls="testimonials" role="tab" data-toggle="tab">Testimonials</a></li>
+          <p><strong href="https://rintze.zelle.me/ref-extractor/">Reference Extractor</strong> is a free online tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word .docx documents.
+            It only works with <em>active</em> citations that have been inserted through the Zotero or Mendeley word processor plugins, and that haven’t been converted to plain text.</p>
+          <p>Reference extractor allows you to:</p>
+          <ul>
+            <li>
+              <p><strong>Extract</strong> Zotero and Mendeley references and save them to CSL JSON, BibTeX, or RIS format, or as a rendered bibliography in APA style.</p>
+              <p><em>Scenario 1</em>: You lost your Zotero/Mendeley library but still have your Word documents.
+                Extraction allows you to recover the items you cited in your Word documents and import them back into your reference manager.
+                Note that imported items won’t be linked to the items in the Word document you extracted them from.</p>
+                <p><em>Scenario 2</em>: Somebody sent you a Word document and you would like to get the cited items into your own reference manager library.</p>
+            </li>
+            <li>
+              <p><strong>Select</strong> the original cited items in your existing Zotero libraries <em>[only available for Zotero]</em>.
+                Once items are selected in Zotero, you can drag the items into a new collection or apply a tag.</p>
+              <p><em>Scenario</em>: You wish to create a collection for the items you’ve cited in a manuscript.</p>
+            </li>
+            <li>
+              <p><strong>Count</strong> the number of times each item has been cited.</p>
+            </li>
+            <li>
+              <p><strong>Identify</strong> the <a href="https://citationstyles.org/">Citation Style Language</a> citation style used in the Word document.</p>
+            </li>
           </ul>
-
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="home">
-              <strong>Reference Extractor</strong> is a free tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word <strong>.docx</strong> documents.
-                With this tool, you can:
-              <ul>
-                <li>Extract references and save them in CSL JSON, BibTeX, or RIS format, or as a bibliography in APA style.
-                  <ul>
-                    <li>This feature can be useful if you e.g. lost your Zotero/Mendeley library but still have your Word documents.
-                      Or perhaps somebody sent you a Word document and you would like to get the cited items into your own reference manager library.</li>
-                  </ul>
-                </li>
-                <li>Select the original cited items in your existing Zotero libraries. [available for Zotero only]
-                  <ul>
-                    <li>Once items are selected in Zotero, you can drag the items into a new collection or apply a tag.</li>
-                  </ul>
-                </li>
-                <li>Discover how many times each item has been cited.</li>
-                <li>See which <a href="https://citationstyles.org/">Citation Style Language</a> citation style was used in the Word document.</li>
-              </ul>
-              I care about your privacy. Reference Extractor does all its work on your own computer, and your documents are never sent across the internet. No snooping, no tracking, no ads.
-            </div>
-            <div role="tabpanel" class="tab-pane" id="generalTips">
-              <p>Few reference managers can import CSL JSON files, but it's the most accurate output format Reference Extractor can generate, as it is the same format used by Zotero and Mendeley to embed item metadata in Word documents.
-                All other output formats involve a format conversion.
-                If you discover issues with the RIS or BibTeX output formats, you can try importing the CSL JSON files into Zotero and use Zotero to convert the reference to the desired output format.
-              </p>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="zoteroTips">
-              <ul>
-                <li>Zotero references are only detected if they have been stored as "Fields", not "Bookmarks".
-                  This can be changed for existing documents through the <a href="https://www.zotero.org/support/word_processor_plugin_usage#document_preferences">Zotero document preferences</a>.</li>
-                <li>Zotero references from documents last used with Zotero 3.x or 4.x can only be extracted if the "Store references in document" option was checked.
-                  This option no longer exists in Zotero 5.x, which always embeds item metadata.</li>
-                <li>Zotero offers easy import via its File menu, with an "Import..." option for downloaded CSL JSON, BibTeX, or RIS files, and an "Import from Clipboard" option if you use the "Copy to Clipboard" button of this tool.</li>
-              </ul>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="troubleshooting">
-              If Reference Extractor doesn't work as expected, you can try the following:
-              <ul>
-                <li>Make sure your Word document has been saved in the ".docx" format</li>
-                <li>Make sure your Word document contains 'active' Zotero or Mendeley citations.
-                  Active citations should have a grey background, and pressing Alt+F9 in Word should toggle them to show or hide their field codes.
-                  Inactive citations have a white background and look like regular text.
-                  If you have a document with inactive plain text citations, or citations inserted with Microsoft Word's own citation feature,
-                  see <a href="https://www.zotero.org/support/kb/importing_formatted_bibliographies">https://www.zotero.org/support/kb/importing_formatted_bibliographies</a>
-                  for other ways to extract citation metadata. 
-                <li>Try a different browser, like Firefox or Google Chrome</li>
-                <li>If you have JavaScript disabled (e.g. by using a browser extension like NoScript), enable JavaScript for this webpage</li>
-              </ul>
-              If you're still stuck, don't hesitate to reach out for assistance.
-            </div>
-            <div role="tabpanel" class="tab-pane" id="testimonials">
-              Reference Extractor is recommended by the following institutions:
-              <ul>
-                <li><a href="https://twitter.com/zotero/status/1161310683109253121">Zotero</a></li>
-                <li><a href="https://update.lib.berkeley.edu/2018/02/07/extracting-references-from-an-already-created-bibliography/">Berkeley Library</a></li>
-                <li><a href="https://twitter.com/BUNanterre/status/953527431838752769">Bibliothèque Universitaire Paris Nanterre</a></li>
-                <li><a href="https://libanswers.caltech.edu/faq/204009">Caltech Library</a></li>
-                <li><a href="https://libguides.libraries.wsu.edu/c.php?g=768677&p=5514182">Washington State University Libraries</a></li>
-              </ul>
-            </div>
-          </div>
+          <p>Check the <a href="https://github.com/rmzelle/ref-extractor#reference-extractor">README</a> for more information about this tool and how to use it.</p>
         </div>
       </div>
       <div class="col-sm-3">
