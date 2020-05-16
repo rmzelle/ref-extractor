@@ -17,9 +17,10 @@ function handleFormatSelect(event) {
 
 function handleFileSelect(event) {
     var extractedFields = [];
-    document.getElementById("extract_count").innerHTML = "";
-    document.getElementById("selected_style").innerHTML = "";
-
+    document.getElementById("extract_count").setAttribute("value", "0");
+    document.getElementById("selected_style").setAttribute("value", "-");
+    document.getElementById("textArea").setAttribute("rows", "3");
+    
     var file = event.target.files[0];
     
     function extractFields(xmlWordFile) {
@@ -127,12 +128,12 @@ function handleFileSelect(event) {
               return selectedStyle;
             }
             
-            document.getElementById("selected_style").innerHTML = selectedCSLStyle.replace("http://www.zotero.org/styles/","");
+            document.getElementById("selected_style").setAttribute("value", selectedCSLStyle.replace("http://www.zotero.org/styles/",""));
 
         });
 
     }, function(error) {
-        document.getElementById("extract_count").innerHTML = "Error reading " + file.name;
+        document.getElementById("extract_count").setAttribute("value", "Error reading " + file.name);
         
         document.getElementById("download").setAttribute("disabled", "true");
         document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
@@ -183,6 +184,7 @@ function processExtractedFields(fields) {
     if (extractedCiteCount > 0) {
         savedItemsString = JSON.stringify(savedCites, null, 2);
         
+        document.getElementById("textArea").setAttribute("rows", "15");
         document.getElementById("textArea").value = convertOutput();
         
         if (extractedCiteCount == 1) {
@@ -196,7 +198,7 @@ function processExtractedFields(fields) {
         if (missingMetadataCount > 0) {
             citeCountFeedback += " (" + missingMetadataCount + " items without metadata)";
         }
-        document.getElementById("extract_count").innerHTML = citeCountFeedback;
+        document.getElementById("extract_count").setAttribute("value", citeCountFeedback);
         
         document.getElementById("download").removeAttribute("disabled");
         document.getElementById("copy_to_clipboard").removeAttribute("disabled");
@@ -207,7 +209,7 @@ function processExtractedFields(fields) {
         if (missingMetadataCount > 0) {
             citeCountFeedback += " (" + missingMetadataCount + " items without metadata)";
         }
-        document.getElementById("extract_count").innerHTML = citeCountFeedback;
+        document.getElementById("extract_count").setAttribute("value", citeCountFeedback);
         
         document.getElementById("download").setAttribute("disabled", "true");
         document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
