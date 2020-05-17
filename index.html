@@ -36,79 +36,91 @@
   <header>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #6c757d;">
-      <span class="navbar-brand mb-0 h1">Reference Extractor</span>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Extract Zotero and Mendeley references from Microsoft Word files</a>
-          </li>
-        </ul>
+      <div class="container">
+        <span class="navbar-brand mb-0 h1">Reference Extractor</span>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Extract Zotero and Mendeley references from Microsoft Word files</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   </header>
 
   <!-- Begin page content -->
   <main role="main" class="flex-shrink-0">
-    <div class="container-fluid">
+    <div class="container">
       <div class="row my-3">
-        <div class="col-lg-7 offset-lg-1">
+        <div class="col-lg-8">
           <p><strong>Reference Extractor</strong> is a free online tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word .docx documents.
             It only works with <em>active</em> citations that have been inserted through the Zotero or Mendeley word processor plugins, and that haven’t been converted to plain text.</p>
           <hr>
-          <form autocomplete="off">
-            <h4>Input</h4>
-            <div class="form-group form-check">
-              <input type="checkbox" class="form-check-input" id="add_citation_counts_toggle">
-              <label class="form-check-label" for="add_citation_counts_toggle">Store cite counts</label>
-              <small id="add_citation_counts_toggle_help" class="form-text text-muted">
-                Select this option to store the cite count (the number of times each item has been cited in the document) in the "note" field of the CSL JSON output. This field matches the "Extra" field in the Zotero user interface.
-              </small>
-            </div>
-            <div class="form-group">
-              <input id="file_upload" type="file">
-              <small id="file_upload_help" class="form-text text-muted">
-                Select your .docx Word file
-              </small>
-            </div>
-          </form>
-          <form autocomplete="off">
-            <h4>Results</h4>
-            <div class="form-group row" style="margin-bottom:0px;">
-              <label for="extract_count" class="col-lg-4 col-form-label col-form-label-sm">Number of extracted references</label>
-              <div class="col-lg-8">
-                <input type="text" readonly class="form-control-plaintext form-control-sm" id="extract_count" value="0">
-              </div>
-            </div>
-            <div class="form-group row" style="margin-bottom:0px;">
-              <label for="selected_style" class="col-lg-4 col-form-label col-form-label-sm">CSL style selected in document</label>
-              <div class="col-lg-8">
-                <input type="text" readonly class="form-control-plaintext form-control-sm" id="selected_style" value="-">
-              </div>
-            </div>
-            <div class="form-group row" style="margin-bottom:0px;">
-              <label for="output_format" class="col-lg-4 control-label col-form-label-sm">Output format</label>
-              <select id="output_format" class="col-lg-4 custom-select custom-select-sm">
-                <option value="data" selected>CSL JSON</option>
-                <option value="bibtex">BibTeX</option>
-                <option value="ris">RIS</option>
-                <option value="bibliography">Formatted citations (APA style)</option>
-              </select>
-            </div>
-            <div class="form-group row">
-              <label for="textArea" class="col-lg-4 control-label col-form-label-sm">Extracted references</label>
-              <div class="col-lg-8" style="padding-left:0px;">
-                <button id="download" type="button" class="btn btn-success btn-sm" disabled>Download</button>
-                <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-success btn-sm" disabled>Copy to clipboard</button>
-                <div class="btn-group">
-                  <button id="zotero_item_selection_button" type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
-                    Select cited items in Zotero <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu" id="zotero_item_selection_link_list"></ul>
+          <h4 class="text-center">Input</h4>
+          <div class="container">
+            <div class="col-lg-11 offset-lg-1">
+              <form autocomplete="off">
+                <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="add_citation_counts_toggle">
+                  <label class="form-check-label" for="add_citation_counts_toggle">Store cite counts</label>
+                  <small id="add_citation_counts_toggle_help" class="form-text text-muted">
+                    Select this option to store the cite count (the number of times each item has been cited in the document) in the "note" field of the CSL JSON output. This field matches the "Extra" field in the Zotero user interface.
+                  </small>
                 </div>
-                <textarea id="textArea" class="form-control form-control-sm" rows="3" readonly style="margin-top: 10px;"></textarea>
-              </div>
+                <div class="form-group">
+                  <input id="file_upload" type="file">
+                  <small id="file_upload_help" class="form-text text-muted">
+                    Select your .docx Word file
+                  </small>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
+          <h4 class="text-center">Results</h4>
+          <div class="container">
+            <div class="col-lg-11 offset-lg-1">
+              <form autocomplete="off">
+                <div class="form-group row" style="margin-bottom:0px;">
+                  <label for="extract_count" class="col-lg-4 col-form-label col-form-label-sm">Number of extracted references</label>
+                  <div class="col-lg-8">
+                    <input type="text" readonly class="form-control-plaintext form-control-sm" id="extract_count" value="0">
+                  </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0px;">
+                  <label for="selected_style" class="col-lg-4 col-form-label col-form-label-sm">CSL style selected in document</label>
+                  <div class="col-lg-8">
+                    <input type="text" readonly class="form-control-plaintext form-control-sm" id="selected_style" value="-">
+                  </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0px;">
+                  <label for="output_format" class="col-lg-4 control-label col-form-label-sm">Output format</label>
+                  <select id="output_format" class="col-lg-4 custom-select custom-select-sm">
+                    <option value="data" selected>CSL JSON</option>
+                    <option value="bibtex">BibTeX</option>
+                    <option value="ris">RIS</option>
+                    <option value="bibliography">Formatted citations (APA style)</option>
+                  </select>
+                </div>
+                <div class="form-group row">
+                  <label for="textArea" class="col-lg-4 control-label col-form-label-sm">Extracted references</label>
+                  <div class="col-lg-8" style="padding-left:0px;">
+                    <button id="download" type="button" class="btn btn-success btn-sm" disabled>Download</button>
+                    <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-success btn-sm" disabled>Copy to clipboard</button>
+                    <div class="btn-group">
+                      <button id="zotero_item_selection_button" type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                        Select in Zotero <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" id="zotero_item_selection_link_list"></ul>
+                    </div>
+                  </div>
+                  <div class="col-lg-12" style="padding-left:0px;">
+                    <textarea id="textArea" class="form-control form-control-sm" rows="3" readonly style="margin-top: 10px;"></textarea>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
           <hr>
           <h4>About Reference Extractor</h4>
           <p>Reference extractor allows you to:</p>
@@ -138,18 +150,16 @@
           <div class="card bg-light">
             <h5 class="card-header text-white bg-info">Support</h5>
             <div class="card-body">
-              <p class="card-text">Was this free tool useful to you?</p>
-              <p class="card-text">If so, please support this project and star my <a href="https://github.com/rmzelle/ref-extractor/">GitHub repository</a>, or make a small donation:</p>
-              <div class="text-center">
-                <a href='https://ko-fi.com/X8X6YKP2' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi4.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
-                <hr>
-                <p class="card-text" style="font-size: small;">
-                  <strong>Alternative donation options</strong>
-                </p>
+              <p class="card-text">Did you find this free tool useful?</p>
+              <p class="card-text">If so, please support this open-source project and star my <a href="https://github.com/rmzelle/ref-extractor/">GitHub repository</a>, or make a small donation:</p>
+              <div class="text-center" style="font-size: small;">
+                <a href='https://ko-fi.com/rintzezelle' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi4.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+                <br /><br />
+                <p class="card-text">or donate via</p>
               </div>
               <ul style="font-size: small;">
                 <li><a href="https://www.paypal.me/RintzeZelle/3">PayPal.Me</a><br>no fees, any amount</li>
-                <li><a href="https://github.com/sponsors/rmzelle">GitHub Sponsors</a><br>no fees, monthly donation<br>dollar-for-dollar match by GitHub (until December 2020)</li>
+                <li><a href="https://github.com/sponsors/rmzelle">GitHub Sponsors</a><br>no fees, monthly donation, dollar-for-dollar match by GitHub (until December 2020)</li>
               </ul>
             </div>
           </div>
@@ -159,9 +169,9 @@
   </main>
 
   <footer class="footer mt-auto py-3">
-    <div class="container-fluid">
+    <div class="container">
       <span class="text-muted">Created by <a href="https://rintze.zelle.me/" target="_blank">Rintze M. Zelle</a> (<a href="https://twitter.com/rintzezelle/" target="_blank"><img src="images/Twitter_Logo_Blue.svg" width="25" height="25" alt="Rintze Zelle's Twitter" /></a>).
-        Powered by GitHub Pages. <a href="https://github.com/citation-style-language/formatter">Code</a> on GitHub.</span>
+        Powered by GitHub Pages. <a href="https://github.com/rmzelle/ref-extractor/">Code</a> on GitHub.</span>
     </div>
   </footer>
   <script src="libraries/ref-extractor.js"></script>
