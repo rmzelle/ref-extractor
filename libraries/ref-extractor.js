@@ -5,11 +5,29 @@ window.savedZoteroLibrarySelectors = {};
 
 var Cite = require('citation-js');
 
+var citationCountCheckboxElement = document.getElementById("add_citation_counts_toggle");
+citationCountCheckboxElement.addEventListener("change", function(){
+  document.getElementById("file_upload").value = null;
+  pageReset();
+  }, false);
+
 var inputElement = document.getElementById("file_upload");
 inputElement.addEventListener("change", handleFileSelect, false);
 
 var outputElement = document.getElementById("output_format");
 outputElement.addEventListener("change", handleFormatSelect, false);
+
+function pageReset() {
+    document.getElementById("extract_count").setAttribute("value", "0");
+    document.getElementById("selected_style").setAttribute("value", "-");
+    
+    document.getElementById("download").setAttribute("disabled", "true");
+    document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", "");
+    document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
+    document.getElementById("zotero_item_selection_button").setAttribute("disabled", "true");
+    document.getElementById("textArea").setAttribute("rows", "3");
+    document.getElementById("textArea").value = "";
+}
 
 function handleFormatSelect(event) {
     document.getElementById("textArea").value = convertOutput();
@@ -17,9 +35,7 @@ function handleFormatSelect(event) {
 
 function handleFileSelect(event) {
     var extractedFields = [];
-    document.getElementById("extract_count").setAttribute("value", "0");
-    document.getElementById("selected_style").setAttribute("value", "-");
-    document.getElementById("textArea").setAttribute("rows", "3");
+    pageReset();
     
     var file = event.target.files[0];
     
@@ -134,11 +150,6 @@ function handleFileSelect(event) {
 
     }, function(error) {
         document.getElementById("extract_count").setAttribute("value", "Error reading " + file.name);
-        
-        document.getElementById("download").setAttribute("disabled", "true");
-        document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
-        document.getElementById("zotero_item_selection_button").setAttribute("disabled", "true");
-        document.getElementById("textArea").value = "";
     });
 }
 
@@ -203,17 +214,11 @@ function processExtractedFields(fields) {
         document.getElementById("download").removeAttribute("disabled");
         document.getElementById("copy_to_clipboard").removeAttribute("disabled");
     } else {
-        document.getElementById("copy_to_clipboard").setAttribute("data-clipboard-text", "");
-        
         citeCountFeedback = "No references extracted.";
         if (missingMetadataCount > 0) {
             citeCountFeedback += " (" + missingMetadataCount + " items without metadata)";
         }
         document.getElementById("extract_count").setAttribute("value", citeCountFeedback);
-        
-        document.getElementById("download").setAttribute("disabled", "true");
-        document.getElementById("copy_to_clipboard").setAttribute("disabled", "true");
-        document.getElementById("textArea").value = "";
     }
     
     let linkList = document.getElementById("zotero_item_selection_link_list");
@@ -227,8 +232,6 @@ function processExtractedFields(fields) {
       }
       document.getElementById("zotero_item_selection_button").removeAttribute("disabled");
       savedZoteroLibrarySelectors = {};
-    } else {
-      document.getElementById("zotero_item_selection_button").setAttribute("disabled", "true");
     }
 }
 
