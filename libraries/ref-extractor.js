@@ -371,7 +371,7 @@ function extractMetadata(items) {
       if (zoteroItemKeys[i].includes("zotero.org")) {
         var itemSelectorFields = [];
         var itemSelectionInfo = {};
-        itemSelectorFields = zoteroItemKeys[i].split("/");
+        itemSelectorFields = zoteroItemKeys[i].replace("http://zotero.org/users/local/","http://zotero.org/users/").split("/");
         
         // Examples of split item URIs
         // [ "http:", "", "zotero.org", "users", "1386342", "items", "TANS5GUE" ]
