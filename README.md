@@ -54,6 +54,10 @@ If Reference Extractor doesn't work or find any items in your Word document, the
   After pressing this shortcut, active Zotero and Mendeley field codes will expand and show the embedded citation metadata.
   Toggled Zotero fields start with "ADDIN ZOTERO_ITEM CSL_CITATION", and toggled Mendeley fields start with "ADDIN CSL_CITATION".
 * The citations in the Word document have been inserted with a different reference manager.
+* [Zotero] For documents with over 220 references, the "Select in Zotero" links may not work correctly.
+  This issue appears to be limited to Windows.
+  Either only about 220 items are selected in Zotero, or no items are selected at all.
+  If this happens, a workaround is to split your Word document into multiple Word documents that each have a reference count under this limit.
 * [Zotero] For older Word documents with Zotero references, note that Zotero [started](https://github.com/zotero/zotero-word-for-windows-integration/issues/30#issuecomment-285073023) offering embedded metadata in 2012 with Zotero 3.0.
   Documents last updated with earlier versions of Zotero don't contain extractable citations.
   For documents last updated with Zotero 3.x and 4.x, extraction is only possible if the option "Store references in document" was checked in the Zotero document preferences.
