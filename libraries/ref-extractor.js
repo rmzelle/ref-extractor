@@ -39,43 +39,22 @@ function handleFileSelect(event) {
     
     var file = event.target.files[0];
     
-    function extractFields(xmlWordFile) {
+    function extractFields(xmlOpenDocumentFile) {
         var fields = [];
         
-        var parsedDOM = new DOMParser().parseFromString(xmlWordFile, 'text/xml');
+        var parsedDOM = new DOMParser().parseFromString(xmlOpenDocumentFile, 'text/xml');
         
-        // Locate the beginning of complex fields (<w:fldChar w:fldCharType="begin"/>, child of <w:r>)
-        var complexFieldStarts = parsedDOM.querySelectorAll("*|fldChar[*|fldCharType=begin]");
+        var referenceMarks = parsedDOM.querySelectorAll("*|reference-mark-start[*|name]");
         
-        for (var i = 0; i < complexFieldStarts.length; i++) {
-            instrTextContent = "";
-            
-            // Visit sibling <w:r> elements until we hit the last one (<w:fldChar w:fldCharType="end"/>, child of <w:r>)
-            nextRun = complexFieldStarts[i].parentElement.nextSibling;
-            while (nextRun) {
-              endRun = nextRun.querySelectorAll("*|fldChar[*|fldCharType=end]");
-              if (endRun.length != 0) {
-                  break;
-              }
-              
-              // Concatenate textContents of <w:instrText/> elements within complex field
-              instrTextFields = nextRun.getElementsByTagName("w:instrText");
-              for (let i = 0; i < instrTextFields.length; i++) {
-                  instrTextContent += instrTextFields[i].textContent;
-              }
-              
-              nextRun = nextRun.nextSibling;
-            }
-            fields.push(instrTextContent);
+        for (var i = 0; i < referenceMarks.length; i++) {
+            fields.push(referenceMarks[i].getAttribute('text:name'));
         }
         
         return(fields);
     }
 
     JSZip.loadAsync(file).then(function(zip) {
-        // "word/document.xml" seems to contain "author-date" style CSL citations
-        // "word/footnotes.xml" seems to contain "note" style CSL citations
-        filesToExtract = ["word/document.xml", "word/footnotes.xml", "word/endnotes.xml"];
+        filesToExtract = ["content.xml"];
         
         // Get file names within zip file
         filesInZip = Object.keys(zip.files);
@@ -105,7 +84,7 @@ function handleFileSelect(event) {
         });
         
         // Show CSL style used in document
-        zip.file("docProps/custom.xml").async("string").then(function(data) {
+        zip.file("content.xml").async("string").then(function(data) {
             var parsedDOM = new DOMParser().parseFromString(data, 'text/xml');
             var selectedCSLStyle = "";
             
@@ -160,12 +139,13 @@ function processExtractedFields(fields) {
     for (var i = 0; i < fields.length; i++) {
       var field = fields[i].trim();
       
-      // Test if field is a Zotero or Mendeley field
-      // Zotero fields are prefixed with "ADDIN ZOTERO_ITEM CSL_CITATION"
-      // Mendeley fields are prefixed with "ADDIN CSL_CITATION"
-      var cslFieldPrefix = /^ADDIN (ZOTERO_ITEM )?CSL_CITATION/;
+      // Test if field is a Zotero field
+      // Zotero fields are prefixed with "ZOTERO_ITEM CSL_CITATION"
+      var cslFieldPrefix = /^ZOTERO_ITEM CSL_CITATION/;
       if (cslFieldPrefix.test(field)) {
         field = field.replace(cslFieldPrefix,"").trim();
+        // there is some kind of hash after the JSON, keep only the JSON
+        field = field.replace(/(\{.+\}) [0-9A-Za-z]+$/, '$1');
         
         // parse rest of field content as JSON
         try {
