@@ -71,6 +71,8 @@ function handleFileSelect(event) {
                 fields.push(instrTextContent);
             }
         } else if (documentType == "OpenDocument") {
+            // when using reference marks, Zotero stores citations in the
+            // text:name attribute of <text:reference-mark-start> elements
             var referenceMarks = parsedDOM.querySelectorAll("*|reference-mark-start[*|name]");
 
             for (var i = 0; i < referenceMarks.length; i++) {
