@@ -181,12 +181,10 @@ function processExtractedFields(fields) {
     for (var i = 0; i < fields.length; i++) {
       var field = fields[i].trim();
       
-      // Test if field is a Zotero or Mendeley field
-      // In Word files:
-      // Zotero fields are prefixed with "ADDIN ZOTERO_ITEM CSL_CITATION"
+      // Check that field is a Zotero or Mendeley field
       // Mendeley fields are prefixed with "ADDIN CSL_CITATION"
-      // In OpenDocument files:
-      // Zotero fields are prefixed with "ZOTERO_ITEM CSL_CITATION"
+      // In Word files, Zotero fields are prefixed with "ADDIN ZOTERO_ITEM CSL_CITATION"
+      // In ODT files, Zotero fields are prefixed only with "ZOTERO_ITEM CSL_CITATION"
       var cslFieldPrefix = /^(ADDIN )?(ZOTERO_ITEM )?CSL_CITATION/;
       if (cslFieldPrefix.test(field)) {
         field = field.replace(cslFieldPrefix,"").trim();
