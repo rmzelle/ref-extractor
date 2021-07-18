@@ -100,7 +100,7 @@ function handleFileSelect(event) {
         } else if (filesInZip.includes("content.xml")) {
             documentType = "OpenDocument";
             filesToExtract = ["content.xml"];
-            fileWithCSLInfo = "content.xml";
+            fileWithCSLInfo = "meta.xml";
         }
 
         // Array intersection (per https://stackoverflow.com/a/1885569/1712389) to identify which files are present
@@ -133,7 +133,7 @@ function handleFileSelect(event) {
             var selectedCSLStyle = "";
             
             var selectedMendeleyCSLStyle = extractMendeleyCSLStyle(parsedDOM);
-            var selectedZoteroCSLStyle = extractZoteroCSLStyle(parsedDOM);
+            var selectedZoteroCSLStyle = extractZoteroCSLStyle(parsedDOM, documentType);
             
             // Only use delimiter if both strings have non-zero lengths; https://stackoverflow.com/a/19903533/1712389
             selectedCSLStyle = [selectedMendeleyCSLStyle, selectedZoteroCSLStyle].filter(val => val).join(', ');
@@ -148,15 +148,37 @@ function handleFileSelect(event) {
               return selectedStyle;
             }
             
-            function extractZoteroCSLStyle(customXmlDOM) {
+            function extractZoteroCSLStyle(customXmlDOM, documentType) {
               var selectedStyle = "";
-              var fields = customXmlDOM.querySelectorAll("property[name^=ZOTERO_PREF]>*");
+              var selector = "property[name^=ZOTERO_PREF]>*";
+              if (documentType == "Word") {
+                  selector = "property[name^=ZOTERO_PREF]>*";
+              } else if (documentType == "OpenDocument") {
+                  // <meta:user-defined meta:name="ZOTERO_PREF_{n}"> where {n} is 1, 2, …
+                  selector = "*|user-defined[*|name^=ZOTERO_PREF]";
+              }
+              var fields = customXmlDOM.querySelectorAll(selector);
 
               var zoteroPrefs = "";
               for (var i = 0; i < fields.length; i++) {
                   zoteroPrefs += fields[i].textContent;
               }
               
+              // in ODT files, the meta elements used by Zotero contain escaped XML
+              if (documentType == "OpenDocument") {
+                  zoteroPrefs = zoteroPrefs.replace(
+                      /&quot;|&lt;|&gt;|&amp;|&apos;/g,
+                      function(match) {
+                          switch (match) {
+                          case '&quot': return '"';
+                          case '&lt;': return '<';
+                          case '&gt;': return '>';
+                          case '&apos;': return "'";
+                          case '&amp;': return '&';
+                          }
+                      });
+              }
+
               if (zoteroPrefs.length > 0) {
                   var lpwstrDOM = new DOMParser().parseFromString(zoteroPrefs, 'text/xml');
                   var selectedStyleNode = lpwstrDOM.querySelector("style[id]");
