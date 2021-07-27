@@ -38,13 +38,9 @@
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #6c757d;">
       <div class="container">
         <span class="navbar-brand mb-0 h1">Reference Extractor</span>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Extract Zotero and Mendeley references from Microsoft Word and LibreOffice (OpenDocument) files</a>
-            </li>
-          </ul>
-        </div>
+        <span class="navbar-text">
+          Extract Zotero and Mendeley references from Microsoft Word and LibreOffice documents
+        </span>
       </div>
     </nav>
   </header>
@@ -54,9 +50,9 @@
     <div class="container">
       <div class="row my-3">
         <div class="col-lg-8">
-          <p><strong>Reference Extractor</strong> is a free tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word .docx and LibreOffice .odt files.
-            It only works with <em>active</em> citations that have been inserted through the Zotero or Mendeley word processor plugins, and that haven’t been converted to plain text.
-            The tool runs locally on your computer, keeping your documents and extracted citations private.</p>
+          <p><strong>Reference Extractor</strong> is a free tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word and LibreOffice documents.
+            References must have been inserted with the Zotero or Mendeley word processor plugins and must not have been converted to plain text.
+            The tool runs entirely on your own computer, keeping your documents and citations private and secure.</p>
           <hr>
           <h4 class="text-center">Input</h4>
           <div class="container">
@@ -72,7 +68,7 @@
                 <div class="form-group">
                   <input id="file_upload" type="file">
                   <small id="file_upload_help" class="form-text text-muted">
-                    Select your .docx or .odt file
+                    Select your .docx (Word) or .odt (LibreOffice) file
                   </small>
                 </div>
               </form>
@@ -124,7 +120,7 @@
           </div>
           <hr>
           <h4>About Reference Extractor</h4>
-          <p>Reference extractor allows you to:</p>
+          <p>Reference Extractor allows you to:</p>
           <ul>
             <li>
               <p><strong>Extract</strong> Zotero and Mendeley references and save them to CSL JSON, BibTeX, or RIS format, or as a rendered bibliography in APA style.</p>
