@@ -45,11 +45,11 @@ function handleFileSelect(event) {
         
         var parsedDOM = new DOMParser().parseFromString(xmlDocumentFile, 'text/xml');
 
-        if (documentType == "Word") {
+        if (documentType == "OfficeOpenXML") {
             // Locate the beginning of complex fields (<w:fldChar w:fldCharType="begin"/>, child of <w:r>)
             var complexFieldStarts = parsedDOM.querySelectorAll("*|fldChar[*|fldCharType=begin]");
 
-            for (var i = 0; i < complexFieldStarts.length; i++) {
+            for (let i = 0; i < complexFieldStarts.length; i++) {
                 instrTextContent = "";
 
                 // Visit sibling <w:r> elements until we hit the last one (<w:fldChar w:fldCharType="end"/>, child of <w:r>)
@@ -62,8 +62,8 @@ function handleFileSelect(event) {
 
                     // Concatenate textContents of <w:instrText/> elements within complex field
                     instrTextFields = nextRun.getElementsByTagName("w:instrText");
-                    for (let i = 0; i < instrTextFields.length; i++) {
-                        instrTextContent += instrTextFields[i].textContent;
+                    for (let j = 0; j < instrTextFields.length; j++) {
+                        instrTextContent += instrTextFields[j].textContent;
                     }
 
                     nextRun = nextRun.nextSibling;
@@ -75,7 +75,7 @@ function handleFileSelect(event) {
             // text:name attribute of <text:reference-mark-start> elements
             var referenceMarks = parsedDOM.querySelectorAll("*|reference-mark-start[*|name]");
 
-            for (var i = 0; i < referenceMarks.length; i++) {
+            for (let i = 0; i < referenceMarks.length; i++) {
                 fields.push(referenceMarks[i].getAttribute("text:name"));
             }
         }
@@ -85,22 +85,22 @@ function handleFileSelect(event) {
 
     JSZip.loadAsync(file).then(function(zip) {
         var filesToExtract = [];
-        var fileWithCSLInfo = "";
+        var fileWithSelectedCslStyle = "";
 
         // Get file names within zip file
         var filesInZip = Object.keys(zip.files);
 
         // Naive approach: check for one of the expected files
         if (filesInZip.includes("word/document.xml")) {
-            documentType = "Word";
+            documentType = "OfficeOpenXML";
             // "word/document.xml" seems to contain "author-date" style CSL citations
             // "word/footnotes.xml" seems to contain "note" style CSL citations
             filesToExtract = ["word/document.xml", "word/footnotes.xml", "word/endnotes.xml"];
-            fileWithCSLInfo = "docProps/custom.xml";
+            fileWithSelectedCslStyle = "docProps/custom.xml";
         } else if (filesInZip.includes("content.xml")) {
             documentType = "OpenDocument";
             filesToExtract = ["content.xml"];
-            fileWithCSLInfo = "meta.xml";
+            fileWithSelectedCslStyle = "meta.xml";
         }
 
         // Array intersection (per https://stackoverflow.com/a/1885569/1712389) to identify which files are present
@@ -128,7 +128,7 @@ function handleFileSelect(event) {
         });
         
         // Show CSL style used in document
-        zip.file(fileWithCSLInfo).async("string").then(function(data) {
+        zip.file(fileWithSelectedCslStyle).async("string").then(function(data) {
             var parsedDOM = new DOMParser().parseFromString(data, 'text/xml');
             var selectedCSLStyle = "";
             
@@ -151,7 +151,7 @@ function handleFileSelect(event) {
             function extractZoteroCSLStyle(customXmlDOM, documentType) {
               var selectedStyle = "";
               var selector = "property[name^=ZOTERO_PREF]>*";
-              if (documentType == "Word") {
+              if (documentType == "OfficeOpenXML") {
                   selector = "property[name^=ZOTERO_PREF]>*";
               } else if (documentType == "OpenDocument") {
                   // <meta:user-defined meta:name="ZOTERO_PREF_{n}"> where {n} is 1, 2, …
