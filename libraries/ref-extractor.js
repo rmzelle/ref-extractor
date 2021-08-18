@@ -34,52 +34,75 @@ function handleFormatSelect(event) {
 }
 
 function handleFileSelect(event) {
+    var documentType = "";
     var extractedFields = [];
     pageReset();
     
     var file = event.target.files[0];
     
-    function extractFields(xmlWordFile) {
+    function extractFields(xmlDocumentFile, documentType) {
         var fields = [];
         
-        var parsedDOM = new DOMParser().parseFromString(xmlWordFile, 'text/xml');
-        
-        // Locate the beginning of complex fields (<w:fldChar w:fldCharType="begin"/>, child of <w:r>)
-        var complexFieldStarts = parsedDOM.querySelectorAll("*|fldChar[*|fldCharType=begin]");
-        
-        for (var i = 0; i < complexFieldStarts.length; i++) {
-            instrTextContent = "";
-            
-            // Visit sibling <w:r> elements until we hit the last one (<w:fldChar w:fldCharType="end"/>, child of <w:r>)
-            nextRun = complexFieldStarts[i].parentElement.nextSibling;
-            while (nextRun) {
-              endRun = nextRun.querySelectorAll("*|fldChar[*|fldCharType=end]");
-              if (endRun.length != 0) {
-                  break;
-              }
-              
-              // Concatenate textContents of <w:instrText/> elements within complex field
-              instrTextFields = nextRun.getElementsByTagName("w:instrText");
-              for (let i = 0; i < instrTextFields.length; i++) {
-                  instrTextContent += instrTextFields[i].textContent;
-              }
-              
-              nextRun = nextRun.nextSibling;
+        var parsedDOM = new DOMParser().parseFromString(xmlDocumentFile, 'text/xml');
+
+        if (documentType == "OfficeOpenXML") {
+            // Locate the beginning of complex fields (<w:fldChar w:fldCharType="begin"/>, child of <w:r>)
+            var complexFieldStarts = parsedDOM.querySelectorAll("*|fldChar[*|fldCharType=begin]");
+
+            for (let i = 0; i < complexFieldStarts.length; i++) {
+                instrTextContent = "";
+
+                // Visit sibling <w:r> elements until we hit the last one (<w:fldChar w:fldCharType="end"/>, child of <w:r>)
+                nextRun = complexFieldStarts[i].parentElement.nextSibling;
+                while (nextRun) {
+                    endRun = nextRun.querySelectorAll("*|fldChar[*|fldCharType=end]");
+                    if (endRun.length != 0) {
+                        break;
+                    }
+
+                    // Concatenate textContents of <w:instrText/> elements within complex field
+                    instrTextFields = nextRun.getElementsByTagName("w:instrText");
+                    for (let j = 0; j < instrTextFields.length; j++) {
+                        instrTextContent += instrTextFields[j].textContent;
+                    }
+
+                    nextRun = nextRun.nextSibling;
+                }
+                fields.push(instrTextContent);
             }
-            fields.push(instrTextContent);
+        } else if (documentType == "OpenDocument") {
+            // when using reference marks, Zotero stores citations in the
+            // text:name attribute of <text:reference-mark-start> elements
+            var referenceMarks = parsedDOM.querySelectorAll("*|reference-mark-start[*|name]");
+
+            for (let i = 0; i < referenceMarks.length; i++) {
+                fields.push(referenceMarks[i].getAttribute("text:name"));
+            }
         }
         
         return(fields);
     }
 
     JSZip.loadAsync(file).then(function(zip) {
-        // "word/document.xml" seems to contain "author-date" style CSL citations
-        // "word/footnotes.xml" seems to contain "note" style CSL citations
-        filesToExtract = ["word/document.xml", "word/footnotes.xml", "word/endnotes.xml"];
-        
+        var filesToExtract = [];
+        var fileWithSelectedCslStyle = "";
+
         // Get file names within zip file
-        filesInZip = Object.keys(zip.files);
-        
+        var filesInZip = Object.keys(zip.files);
+
+        // Naive approach: check for one of the expected files
+        if (filesInZip.includes("word/document.xml")) {
+            documentType = "OfficeOpenXML";
+            // "word/document.xml" seems to contain "author-date" style CSL citations
+            // "word/footnotes.xml" seems to contain "note" style CSL citations
+            filesToExtract = ["word/document.xml", "word/footnotes.xml", "word/endnotes.xml"];
+            fileWithSelectedCslStyle = "docProps/custom.xml";
+        } else if (filesInZip.includes("content.xml")) {
+            documentType = "OpenDocument";
+            filesToExtract = ["content.xml"];
+            fileWithSelectedCslStyle = "meta.xml";
+        }
+
         // Array intersection (per https://stackoverflow.com/a/1885569/1712389) to identify which files are present
         filesToExtract = filesInZip.filter((n) => filesToExtract.includes(n));
         
@@ -90,7 +113,7 @@ function handleFileSelect(event) {
         
         var listOfPromises = zipEntries.map(function(entry) {
             return entry.async("string").then(function (data) {
-              return extractFields(data);
+                return extractFields(data, documentType);
             });
         });
         
@@ -105,12 +128,12 @@ function handleFileSelect(event) {
         });
         
         // Show CSL style used in document
-        zip.file("docProps/custom.xml").async("string").then(function(data) {
+        zip.file(fileWithSelectedCslStyle).async("string").then(function(data) {
             var parsedDOM = new DOMParser().parseFromString(data, 'text/xml');
             var selectedCSLStyle = "";
             
             var selectedMendeleyCSLStyle = extractMendeleyCSLStyle(parsedDOM);
-            var selectedZoteroCSLStyle = extractZoteroCSLStyle(parsedDOM);
+            var selectedZoteroCSLStyle = extractZoteroCSLStyle(parsedDOM, documentType);
             
             // Only use delimiter if both strings have non-zero lengths; https://stackoverflow.com/a/19903533/1712389
             selectedCSLStyle = [selectedMendeleyCSLStyle, selectedZoteroCSLStyle].filter(val => val).join(', ');
@@ -125,15 +148,37 @@ function handleFileSelect(event) {
               return selectedStyle;
             }
             
-            function extractZoteroCSLStyle(customXmlDOM) {
+            function extractZoteroCSLStyle(customXmlDOM, documentType) {
               var selectedStyle = "";
-              var fields = customXmlDOM.querySelectorAll("property[name^=ZOTERO_PREF]>*");
+              var selector = "property[name^=ZOTERO_PREF]>*";
+              if (documentType == "OfficeOpenXML") {
+                  selector = "property[name^=ZOTERO_PREF]>*";
+              } else if (documentType == "OpenDocument") {
+                  // <meta:user-defined meta:name="ZOTERO_PREF_{n}"> where {n} is 1, 2, …
+                  selector = "*|user-defined[*|name^=ZOTERO_PREF]";
+              }
+              var fields = customXmlDOM.querySelectorAll(selector);
 
               var zoteroPrefs = "";
               for (var i = 0; i < fields.length; i++) {
                   zoteroPrefs += fields[i].textContent;
               }
               
+              // in ODT files, the meta elements used by Zotero contain escaped XML
+              if (documentType == "OpenDocument") {
+                  zoteroPrefs = zoteroPrefs.replace(
+                      /&quot;|&lt;|&gt;|&amp;|&apos;/g,
+                      function(match) {
+                          switch (match) {
+                          case '&quot': return '"';
+                          case '&lt;': return '<';
+                          case '&gt;': return '>';
+                          case '&apos;': return "'";
+                          case '&amp;': return '&';
+                          }
+                      });
+              }
+
               if (zoteroPrefs.length > 0) {
                   var lpwstrDOM = new DOMParser().parseFromString(zoteroPrefs, 'text/xml');
                   var selectedStyleNode = lpwstrDOM.querySelector("style[id]");
@@ -160,12 +205,15 @@ function processExtractedFields(fields) {
     for (var i = 0; i < fields.length; i++) {
       var field = fields[i].trim();
       
-      // Test if field is a Zotero or Mendeley field
-      // Zotero fields are prefixed with "ADDIN ZOTERO_ITEM CSL_CITATION"
+      // Check that field is a Zotero or Mendeley field
       // Mendeley fields are prefixed with "ADDIN CSL_CITATION"
-      var cslFieldPrefix = /^ADDIN (ZOTERO_ITEM )?CSL_CITATION/;
+      // In Word files, Zotero fields are prefixed with "ADDIN ZOTERO_ITEM CSL_CITATION"
+      // In ODT files, Zotero fields are prefixed only with "ZOTERO_ITEM CSL_CITATION"
+      var cslFieldPrefix = /^(ADDIN )?(ZOTERO_ITEM )?CSL_CITATION/;
       if (cslFieldPrefix.test(field)) {
         field = field.replace(cslFieldPrefix,"").trim();
+        // if there is some kind of hash after the JSON, keep only the JSON
+        field = field.replace(/(\{.+\}) [0-9A-Za-z]+$/, '$1');
         
         // parse rest of field content as JSON
         try {
