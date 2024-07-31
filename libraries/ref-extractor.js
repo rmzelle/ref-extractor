@@ -478,6 +478,7 @@ document.getElementById("download").addEventListener("click", function(){
           outputExtension = ".ris";
           break;
         case 'bibliography':
+        case 'by-number':
           outputExtension = ".txt";
           break;
         default:
@@ -496,10 +497,24 @@ var clipboard = new ClipboardJS('#copy_to_clipboard', {
 function convertOutput() {
   var csl_json = savedItemsString;
   var outputFormat = outputElement.options[outputElement.selectedIndex].value;
-  
-  let citationRender = new Cite(csl_json);
-  
-  return citationRender.format(outputFormat);
+
+  if (outputFormat == 'by-number') {
+    try {
+      var citedRefs = JSON.parse(csl_json).map(c => ({
+        'count': (c.note.match(/(?<=Times cited: )(\d+)/g) | 'NA'),
+        'authors': c['author'][0]['family'] + ((c['author'].length == 2) ? ' and ' + c['author'][1]['family'] : ((c['author'].length > 2) ? ' et al.' : '')),
+        'year': c['issued']['date-parts'][0][0],
+        'title': c['title'],
+      }));
+      return refExtract.map(c => `${c.count} citations: ${c.authors} (${c.year}). ${c.title}`).sort().join('\n');
+    } catch (ex) {
+      console.error(ex);
+      return 'Failed to count references.'
+    }
+  } else {
+    let citationRender = new Cite(csl_json);
+    return citationRender.format(outputFormat);
+  }
 }
 
 // Provide some feedback on button click
