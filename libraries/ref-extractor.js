@@ -500,16 +500,24 @@ function convertOutput() {
 
   if (outputFormat == 'by-number') {
     try {
-      var citedRefs = JSON.parse(csl_json).map(c => ({
-        'count': (c.note.match(/(?<=Times cited: )(\d+)/g) | 'NA'),
-        'authors': c['author'][0]['family'] + ((c['author'].length == 2) ? ' and ' + c['author'][1]['family'] : ((c['author'].length > 2) ? ' et al.' : '')),
-        'year': c['issued']['date-parts'][0][0],
-        'title': c['title'],
+      // add cite count into json title
+      let edited_json = JSON.stringify(JSON.parse(csl_json).map(c => {
+        let count = c.note.match(/(?<=Times cited: )(\d+)/g) | 'NA';
+        c['title'] = `[${count.toString().padStart(2, '0')} citations] ${c['title']}`;
+        return c;
       }));
-      return refExtract.map(c => `${c.count} citations: ${c.authors} (${c.year}). ${c.title}`).sort().join('\n');
+      // format as apa and move to beginning of line
+      let citationRender = new Cite(edited_json);
+      let bibliography = citationRender.format('bibliography').split('\n').map(ref => {
+        let count_str = (ref.match(/\[\d+ citations\] /) || [''])[0];
+        ref = count_str + ref.replace(count_str, '');
+        return ref;
+      });
+      // sort by count
+      return bibliography.sort().filter(l => l != '').join('\n');
     } catch (ex) {
       console.error(ex);
-      return 'Failed to count references.'
+      return 'Failed to count references. Did you activate the "Store cite counts" option?'
     }
   } else {
     let citationRender = new Cite(csl_json);
