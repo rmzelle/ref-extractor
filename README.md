@@ -19,6 +19,8 @@ Reference extractor allows you to:
   
   *Scenario*: You wish to create a collection for the items you've cited in a manuscript.
 * **Count** the number of times each item has been cited.
+
+  *Scenario*: You wish to find and remove references cited once or twice to reduce your manuscript’s word count.
 * **Identify** the [Citation Style Language](https://citationstyles.org/) citation style used in the document.
 
 ## Tips for use
