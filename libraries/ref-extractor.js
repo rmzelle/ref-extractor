@@ -480,7 +480,7 @@ document.getElementById("download").addEventListener("click", function(){
         case 'bibliography':
           outputExtension = ".txt";
           break;
-        case 'by-citations':
+        case 'by-count':
           outputExtension = ".tsv";
           break;
         default:
@@ -500,23 +500,23 @@ function convertOutput() {
   var csl_json = savedItemsString;
   var outputFormat = outputElement.options[outputElement.selectedIndex].value;
 
-  if (outputFormat == 'by-citations') {
+  if (outputFormat == 'by-count') {
     try {
       // add cite count into json title
       let edited_json = JSON.stringify(JSON.parse(csl_json).map(c => {
         let count = c.note.match(/(?<=Times cited: )(\d+)/g) | 'NA';
-        c['title'] = `[${count.toString().padStart(2, '0')} citations] ${c['title']}`;
+        c['title'] = `[${count} citations] ${c['title']}`;
         return c;
       }));
       // format as apa and move to beginning of line
       let citationRender = new Cite(edited_json);
       let bibliography = citationRender.format('bibliography').split('\n').map(ref => {
-        let count_str = (ref.match(/\[(\d+) citations\] /) || ['', '00'])[1];
-        ref = count_str + '\t' + ref.replace(count_str, '');
+        let count_str = (ref.match(/\[(\d+) citations\] /) || ['', '0']);
+        ref = count_str[1] + '\t' + ref.replace(count_str[0], '');
         return ref;
       });
       // sort by count
-      return 'cite_count\treference\n' + bibliography.sort().filter(l => l != '00\t').join('\n');
+      return 'cite_count\treference\n' + bibliography.sort().filter(l => l != '0\t').join('\n');
     } catch (ex) {
       console.error(ex);
       return 'Failed to count references. Did you activate the "Store cite counts" option?'
