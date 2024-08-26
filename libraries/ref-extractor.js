@@ -480,7 +480,7 @@ document.getElementById("download").addEventListener("click", function(){
         case 'bibliography':
           outputExtension = ".txt";
           break;
-        case 'by-number':
+        case 'by-citations':
           outputExtension = ".tsv";
           break;
         default:
@@ -500,7 +500,7 @@ function convertOutput() {
   var csl_json = savedItemsString;
   var outputFormat = outputElement.options[outputElement.selectedIndex].value;
 
-  if (outputFormat == 'by-number') {
+  if (outputFormat == 'by-citations') {
     try {
       // add cite count into json title
       let edited_json = JSON.stringify(JSON.parse(csl_json).map(c => {
