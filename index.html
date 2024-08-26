@@ -62,7 +62,7 @@
                   <input type="checkbox" class="form-check-input" id="add_citation_counts_toggle">
                   <label class="form-check-label" for="add_citation_counts_toggle">Store cite counts</label>
                   <small id="add_citation_counts_toggle_help" class="form-text text-muted">
-                    Select this option to store the cite count (the number of times each item has been cited in the document) in the "note" field of the CSL JSON output. This field matches the "Extra" field in the Zotero user interface.
+                    Select this option to store the cite count (the number of times each item has been cited in the document). It is added to the "note" field of the CSL JSON output, which matches the "Extra" field in the Zotero user interface. It is also used as the first column in the tsv export.
                   </small>
                 </div>
                 <div class="form-group">
@@ -97,7 +97,7 @@
                     <option value="bibtex">BibTeX</option>
                     <option value="ris">RIS</option>
                     <option value="bibliography">Formatted citations (APA style)</option>
-                    <option value="by-number">Citations (APA) sorted by cite count</option>
+                    <option value="by-citations">cite count and formatted citations (TSV file)</option>
                   </select>
                 </div>
                 <div class="form-group row">
