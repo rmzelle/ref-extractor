@@ -516,7 +516,7 @@ function convertOutput() {
         return ref;
       });
       // sort by count
-      return 'cite_count\treference\n' + bibliography.sort().filter(l => l != '').join('\n');
+      return 'cite_count\treference\n' + bibliography.sort().filter(l => l != '00\t').join('\n');
     } catch (ex) {
       console.error(ex);
       return 'Failed to count references. Did you activate the "Store cite counts" option?'
