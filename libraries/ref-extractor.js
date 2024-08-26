@@ -511,7 +511,7 @@ function convertOutput() {
       // format as apa and move to beginning of line
       let citationRender = new Cite(edited_json);
       let bibliography = citationRender.format('bibliography').split('\n').map(ref => {
-        let count_str = (ref.match(/\[(\d+) citations\] /) || ['', 00])[1];
+        let count_str = (ref.match(/\[(\d+) citations\] /) || ['', '00'])[1];
         ref = count_str + '\t' + ref.replace(count_str, '');
         return ref;
       });
