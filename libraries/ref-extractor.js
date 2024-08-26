@@ -510,13 +510,19 @@ function convertOutput() {
       }));
       // format as apa and move to beginning of line
       let citationRender = new Cite(edited_json);
-      let bibliography = citationRender.format('bibliography').split('\n').map(ref => {
-        let count_str = (ref.match(/\[(\d+) citations\] /) || ['', '0']);
-        ref = count_str[1] + '\t' + ref.replace(count_str[0], '');
-        return ref;
+      let bibliography = citationRender.format('bibliography')
+        .split('\n')
+        .map(ref => {
+          let count_str = (ref.match(/\[(\d+) citations\] /) || ['', '0']);
+          ref = [Number(count_str[1]), count_str[1] + '\t' + ref.replace(count_str[0], '')];
+          return ref;
       });
       // sort by count
-      return 'cite_count\treference\n' + bibliography.sort().filter(l => l != '0\t').join('\n');
+      return 'cite_count\treference\n' + bibliography
+        .sort((a, b) => { return a[0] - b[0]})
+        .map(r => r[1])
+        .filter(r => r != '0\t')
+        .join('\n');
     } catch (ex) {
       console.error(ex);
       return 'Failed to count references. Did you activate the "Store cite counts" option?'
