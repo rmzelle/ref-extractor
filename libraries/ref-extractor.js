@@ -478,8 +478,10 @@ document.getElementById("download").addEventListener("click", function(){
           outputExtension = ".ris";
           break;
         case 'bibliography':
-        case 'by-number':
           outputExtension = ".txt";
+          break;
+        case 'by-number':
+          outputExtension = ".tsv";
           break;
         default:
           outputExtension = ".json";
@@ -509,12 +511,12 @@ function convertOutput() {
       // format as apa and move to beginning of line
       let citationRender = new Cite(edited_json);
       let bibliography = citationRender.format('bibliography').split('\n').map(ref => {
-        let count_str = (ref.match(/\[\d+ citations\] /) || [''])[0];
-        ref = count_str + ref.replace(count_str, '');
+        let count_str = (ref.match(/\[(\d+) citations\] /) || ['', 00])[1];
+        ref = count_str + '\t' + ref.replace(count_str, '');
         return ref;
       });
       // sort by count
-      return bibliography.sort().filter(l => l != '').join('\n');
+      return 'cite_count\treference\n' + bibliography.sort().filter(l => l != '').join('\n');
     } catch (ex) {
       console.error(ex);
       return 'Failed to count references. Did you activate the "Store cite counts" option?'
