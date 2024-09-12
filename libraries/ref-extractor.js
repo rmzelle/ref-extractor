@@ -467,7 +467,7 @@ document.getElementById("download").addEventListener("click", function(){
         case 'bibliography':
           outputExtension = ".txt";
           break;
-        case 'by-bibliography-with-counts':
+        case 'bibliography-with-counts':
           outputExtension = ".tsv";
           break;
         default:
