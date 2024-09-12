@@ -5,12 +5,6 @@ window.savedZoteroLibrarySelectors = {};
 
 var Cite = require('citation-js');
 
-var citationCountCheckboxElement = document.getElementById("add_citation_counts_toggle");
-citationCountCheckboxElement.addEventListener("change", function(){
-  document.getElementById("file_upload").value = null;
-  pageReset();
-  }, false);
-
 var inputElement = document.getElementById("file_upload");
 inputElement.addEventListener("change", handleFileSelect, false);
 
@@ -283,12 +277,7 @@ function processExtractedFields(fields) {
     }
 }
 
-function deduplicateCites(cites) {
-  addCitationCounts = false;
-  if (add_citation_counts_toggle.checked) {
-      addCitationCounts = true;
-  }
-  
+function deduplicateCites(cites) {  
   // create a nested array with items, their extracted uris, and their citation counts
   var deduplicationArray = [];
   for (let i = 0; i < cites.length; i++) {
@@ -355,14 +344,12 @@ function deduplicateCites(cites) {
       // Store cite count
       deduplicationArray[i].count = matchingCites.length;
       
-      // Add cite count to item metadata, if pref is set
-      if (addCitationCounts) {
-        if (deduplicationArray[i].hasOwnProperty("item")) {
-          if (!deduplicationArray[i].item.hasOwnProperty("note")) {
-            deduplicationArray[i].item.note = "";
-          }
-          deduplicationArray[i].item.note = "Times cited: " + deduplicationArray[i].count + "\n" + deduplicationArray[i].item.note;
+      // Add cite count to item metadata
+      if (deduplicationArray[i].hasOwnProperty("item")) {
+        if (!deduplicationArray[i].item.hasOwnProperty("note")) {
+          deduplicationArray[i].item.note = "";
         }
+        deduplicationArray[i].item.note = "Times cited: " + deduplicationArray[i].count + "\n" + deduplicationArray[i].item.note;
       }
       
       // Mark other cites for deletion (via index property)
@@ -480,7 +467,7 @@ document.getElementById("download").addEventListener("click", function(){
         case 'bibliography':
           outputExtension = ".txt";
           break;
-        case 'by-count':
+        case 'by-bibliography-with-counts':
           outputExtension = ".tsv";
           break;
         default:
@@ -498,39 +485,49 @@ var clipboard = new ClipboardJS('#copy_to_clipboard', {
 
 function convertOutput() {
   var csl_json = savedItemsString;
-  var outputFormat = outputElement.options[outputElement.selectedIndex].value;
 
-  if (outputFormat == 'by-count') {
-    try {
-      // add cite count into json title
-      let edited_json = JSON.stringify(JSON.parse(csl_json).map(c => {
-        let count = c.note.match(/(?<=Times cited: )(\d+)/g) | 'NA';
-        c['title'] = `[${count} citations] ${c['title']}`;
-        return c;
-      }));
-      // format as apa and move to beginning of line
-      let citationRender = new Cite(edited_json);
-      let bibliography = citationRender.format('bibliography')
-        .split('\n')
-        .map(ref => {
-          let count_str = (ref.match(/\[(\d+) citations\] /) || ['', '0']);
-          ref = [Number(count_str[1]), count_str[1] + '\t' + ref.replace(count_str[0], '')];
-          return ref;
-      });
-      // sort by count
-      return 'cite_count\treference\n' + bibliography
-        .sort((a, b) => { return a[0] - b[0]})
-        .map(r => r[1])
-        .filter(r => r != '0\t')
-        .join('\n');
-    } catch (ex) {
-      console.error(ex);
-      return 'Failed to count references. Did you activate the "Store cite counts" option?'
-    }
-  } else {
-    let citationRender = new Cite(csl_json);
-    return citationRender.format(outputFormat);
+  var outputFormat = outputElement.options[outputElement.selectedIndex].value;
+  var renderedOutput = "";
+
+  switch (outputFormat) {
+      case 'data-with-counts':
+        var citationRender = new Cite(csl_json);
+        renderedOutput = citationRender.format("data");
+        break;
+      case 'bibliography-with-counts':
+        // add cite count into json title
+        var edited_json = JSON.stringify(JSON.parse(csl_json).map(c => {
+          let count = c.note.match(/(?<=Times cited: )(\d+)/g) | 'NA';
+          c['title'] = `[${count} citations] ${c['title']}`;
+          return c;
+        }));
+        // format as apa and move to beginning of line
+        var citationRender = new Cite(edited_json);
+        let bibliography = citationRender.format('bibliography')
+          .split('\n')
+          .map(ref => {
+            let count_str = (ref.match(/\[(\d+) citations\] /) || ['', '0']);
+            ref = [Number(count_str[1]), count_str[1] + '\t' + ref.replace(count_str[0], '')];
+            return ref;
+        });
+        // sort by count
+        renderedOutput = 'cite_count\treference\n' + bibliography
+          .sort((a, b) => { return a[0] - b[0]})
+          .map(r => r[1])
+          .filter(r => r != '0\t')
+          .join('\n');
+        break;
+      default:
+        //remove cite counts
+        var edited_json = JSON.stringify(JSON.parse(csl_json).map(c => {
+          c.note = c.note.replace(/Times cited: \d+\n/g, '');
+          return c;
+        }));
+        var citationRender = new Cite(edited_json);
+        renderedOutput = citationRender.format(outputFormat); 
   }
+
+  return renderedOutput;
 }
 
 // Provide some feedback on button click

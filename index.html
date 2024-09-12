@@ -54,69 +54,68 @@
             References must have been inserted with the Zotero or Mendeley word processor plugins and must not have been converted to plain text.
             The tool runs entirely on your own computer, keeping your documents and citations private and secure.</p>
           <hr>
-          <h4 class="text-center">Input</h4>
+          <br/>
           <div class="container">
-            <div class="col-lg-11 offset-lg-1">
+            <div class="col-lg-11 text-center">
+              <h5>Step 1.</h5>
+              <p>Select your Word (.docx) or LibreOffice (.odt) file</p>
               <form autocomplete="off">
-                <div class="form-group form-check">
-                  <input type="checkbox" class="form-check-input" id="add_citation_counts_toggle">
-                  <label class="form-check-label" for="add_citation_counts_toggle">Store cite counts</label>
-                  <small id="add_citation_counts_toggle_help" class="form-text text-muted">
-                    Select this option to store the cite count (the number of times each item has been cited in the document). It is added to the "note" field of the CSL JSON output, which matches the "Extra" field in the Zotero user interface. It is also used as the first column in the TSV export.
-                  </small>
-                </div>
                 <div class="form-group">
                   <input id="file_upload" type="file">
-                  <small id="file_upload_help" class="form-text text-muted">
-                    Select your .docx (Word) or .odt (LibreOffice) file
-                  </small>
                 </div>
               </form>
             </div>
           </div>
-          <h4 class="text-center">Results</h4>
+          <br/>
           <div class="container">
-            <div class="col-lg-11 offset-lg-1">
-              <form autocomplete="off">
-                <div class="form-group row" style="margin-bottom:0px;">
-                  <label for="extract_count" class="col-lg-4 col-form-label col-form-label-sm">Number of extracted references</label>
-                  <div class="col-lg-8">
-                    <input type="text" readonly class="form-control-plaintext form-control-sm" id="extract_count" value="0">
-                  </div>
-                </div>
-                <div class="form-group row" style="margin-bottom:0px;">
-                  <label for="selected_style" class="col-lg-4 col-form-label col-form-label-sm">CSL style selected in document</label>
-                  <div class="col-lg-8">
-                    <input type="text" readonly class="form-control-plaintext form-control-sm" id="selected_style" value="-">
-                  </div>
-                </div>
-                <div class="form-group row" style="margin-bottom:0px;">
-                  <label for="output_format" class="col-lg-4 control-label col-form-label-sm">Output format</label>
-                  <select id="output_format" class="col-lg-4 custom-select custom-select-sm">
-                    <option value="data" selected>CSL JSON</option>
-                    <option value="bibtex">BibTeX</option>
-                    <option value="ris">RIS</option>
-                    <option value="bibliography">Formatted references (APA style)</option>
-                    <option value="by-count">cite count and formatted references (TSV file)</option>
-                  </select>
-                </div>
-                <div class="form-group row">
-                  <label for="textArea" class="col-lg-4 control-label col-form-label-sm">Extracted references</label>
-                  <div class="col-lg-8" style="padding-left:0px;">
-                    <button id="download" type="button" class="btn btn-success btn-sm" disabled>Download</button>
-                    <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-success btn-sm" disabled>Copy to clipboard</button>
-                    <div class="btn-group">
-                      <button id="zotero_item_selection_button" type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
-                        Select in Zotero <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu" id="zotero_item_selection_link_list"></ul>
+            <div class="col-lg-11">
+              <h5 class="text-center">Step 2.</h5>
+              <p class="text-center">Save the extracted citations in your preferred format, or select them in your Zotero library.</p>
+              <div class="container">
+                <div class="offset-lg-1">
+                  <form autocomplete="off">
+                    <div class="form-group row" style="margin-bottom:0px;">
+                      <label for="extract_count" class="col-lg-4 col-form-label col-form-label-sm">Number of extracted references</label>
+                      <div class="col-lg-8">
+                        <input type="text" readonly class="form-control-plaintext form-control-sm" id="extract_count" value="0">
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-lg-12" style="padding-left:0px;">
-                    <textarea id="textArea" class="form-control form-control-sm" rows="3" readonly style="margin-top: 10px;"></textarea>
-                  </div>
+                    <div class="form-group row" style="margin-bottom:0px;">
+                      <label for="selected_style" class="col-lg-4 col-form-label col-form-label-sm">CSL style selected in document</label>
+                      <div class="col-lg-8">
+                        <input type="text" readonly class="form-control-plaintext form-control-sm" id="selected_style" value="-">
+                      </div>
+                    </div>
+                    <div class="form-group row" style="margin-bottom:0px;">
+                      <label for="output_format" class="col-lg-4 control-label col-form-label-sm">Output format</label>
+                      <select id="output_format" class="col-lg-4 custom-select custom-select-sm">
+                        <option value="data" selected>CSL JSON</option>
+                        <option value="data-with-counts">CSL JSON (with cite counts)</option>
+                        <option value="bibtex">BibTeX</option>
+                        <option value="ris">RIS</option>
+                        <option value="bibliography">APA-style references</option>
+                        <option value="bibliography-with-counts">APA-style references (with cite counts, tab-separated)</option>
+                      </select>
+                    </div>
+                    <div class="form-group row">
+                      <label for="textArea" class="col-lg-4 control-label col-form-label-sm">Extracted references</label>
+                      <div class="col-lg-8" style="padding-left:0px;">
+                        <button id="download" type="button" class="btn btn-success btn-sm" disabled>Download</button>
+                        <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-success btn-sm" disabled>Copy to clipboard</button>
+                        <div class="btn-group">
+                          <button id="zotero_item_selection_button" type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                            Select in Zotero <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" id="zotero_item_selection_link_list"></ul>
+                        </div>
+                      </div>
+                      <div class="col-lg-12" style="padding-left:0px;">
+                        <textarea id="textArea" class="form-control form-control-sm" rows="3" readonly style="margin-top: 10px;"></textarea>
+                      </div>
+                    </div>
+                  </form>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
           <hr>
@@ -125,19 +124,26 @@
           <ul>
             <li>
               <p><strong>Extract</strong> Zotero and Mendeley references and save them to CSL JSON, BibTeX, or RIS format, or as a rendered bibliography in APA style.</p>
-              <p><em>Scenario 1</em>: You lost your Zotero/Mendeley library but still have your documents.
-                Extraction allows you to recover the items you cited in your documents and import them back into your reference manager.
-                Note that imported items won’t be linked to the items in the document you extracted them from.</p>
-              <p><em>Scenario 2</em>: Somebody sent you a document and you would like to get the cited items into your own reference manager library.</p>
+              <ul>
+                <li>
+                  <p><em>Scenario 1</em>: You lost your Zotero/Mendeley library but still have your documents.
+                    Extraction allows you to recover the items you cited in your documents and import them back into your reference manager.
+                    Note that imported items won’t be linked to the items in the document you extracted them from.</p>
+                </li>
+                <li>
+                  <p><em>Scenario 2</em>: Somebody sent you a document and you would like to get the cited items into your own reference manager library.</p>
+                </li>
+              </ul>
             </li>
             <li>
               <p><strong>Select</strong> the original cited items in your existing Zotero libraries <em>[only available for Zotero]</em>.
                 Once items are selected in Zotero, you can drag the items into a new collection or apply a tag.</p>
-              <p><em>Scenario</em>: You wish to create a collection for the items you’ve cited in a manuscript.</p>
+              <ul>
+                <li><p><em>Scenario</em>: You wish to create a collection for the items you’ve cited in a manuscript.</p></li>
+              </ul>
             </li>
             <li>
               <p><strong>Count</strong> the number of times each item has been cited.</p>
-              <p><em>Scenario</em>: You wish to find and remove references cited once or twice to reduce your manuscript’s word count.</p>
             </li>
             <li>
               <p><strong>Identify</strong> the <a href="https://citationstyles.org/">Citation Style Language</a> citation style used in the document.</p>
