@@ -521,6 +521,7 @@ function convertOutput() {
         //remove cite counts
         var edited_json = JSON.stringify(JSON.parse(csl_json).map(c => {
           c.note = c.note.replace(/Times cited: \d+\n/g, '');
+          if (c.note == "") { c.note = undefined; }
           return c;
         }));
         var citationRender = new Cite(edited_json);
