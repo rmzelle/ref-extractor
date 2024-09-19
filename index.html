@@ -50,75 +50,67 @@
           <hr>
           <br>
           <div class="container">
-            <div class="col-lg-11 text-center">
+            <div class="offset-lg-1 col-lg-9">
               <h5>Step 1.</h5>
-              <p>Select your Word (.docx) or LibreOffice (.odt) file</p>
               <form autocomplete="off">
-                <div class="form-group">
-                  <input id="file_upload" type="file">
-                </div>
+                <label for="file_upload" class="form-label">Select your Word (.docx) or LibreOffice (.odt) file</label>
+                <input class="form-control" type="file" id="file_upload">
               </form>
             </div>
           </div>
           <br>
           <div class="container">
-            <div class="col-lg-11">
-              <h5 class="text-center">Step 2.</h5>
-              <p class="text-center">Save the extracted citations in your preferred format, or select them in your Zotero library.</p>
+            <div class="offset-lg-1 col-lg-9">
+              <h5>Step 2.</h5>
+              <p>Save the extracted references in your preferred format, or select them in your Zotero library.</p>
               <div class="container">
-                <div class="offset-lg-1">
-                  <form autocomplete="off">
-                    <div class="form-group row" style="margin-bottom:0px;">
-                      <div class="col-lg-4">
-                        <label for="extract_count" class="col-form-label col-form-label-sm">Number of extracted references</label>
-                      </div>
-                      <div class="col-lg-8">
-                        <input type="text" readonly class="form-control-plaintext form-control-sm" id="extract_count" value="0">
-                      </div>
+                <form autocomplete="off">
+                  <div class="row mb-1" style="margin-bottom:0px;">
+                    <div class="form-floating">
+                      <input type="text" readonly class="form-control form-control-sm" id="extract_count" value="">
+                      <label for="extract_count">References found</label>
                     </div>
-                    <div class="form-group row" style="margin-bottom:0px;">
-                      <div class="col-lg-4">
-                        <label for="selected_style" class="col-form-label col-form-label-sm">CSL style selected in document</label>
-                      </div>
-                      <div class="col-lg-8">
-                        <input type="text" readonly class="form-control-plaintext form-control-sm" id="selected_style" value="-">
-                      </div>
+                  </div>
+                  <div class="row mb-1" style="margin-bottom:0px;">
+                    <div class="form-floating">
+                      <input type="text" readonly class="form-control form-control-sm" id="selected_style" value="">
+                      <label for="selected_style">CSL style selected in document</label>
                     </div>
-                    <div class="form-group row" style="margin-bottom:4px;">
-                      <div class="col-lg-4">
-                        <label for="output_format" class="control-label col-form-label-sm">Output format</label>
-                      </div>
-                      <div class="col-lg-8">
-                        <select id="output_format" class="form-select form-select-sm">
-                          <option value="data" selected>CSL JSON</option>
-                          <option value="data-with-counts">CSL JSON (with cite counts)</option>
-                          <option value="bibtex">BibTeX</option>
-                          <option value="ris">RIS</option>
-                          <option value="bibliography">APA references</option>
-                          <option value="bibliography-with-counts">APA references (with cite counts, tab-separated)</option>
-                        </select>
-                      </div>
+                  </div>
+                  <div class="offset-lg-3 btn-group">
+                    <button id="zotero_item_selection_button" type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                      Select in Zotero <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="zotero_item_selection_link_list"></ul>
+                  </div>
+                  <hr>
+                  <div class="row" style="margin-bottom:4px;">
+                    <div class="col-lg-3">
+                      <label for="output_format" class="control-label col-form-label-sm">Output format</label>
                     </div>
-                    <div class="form-group row">
-                      <div class="col-lg-4">
-                        <label for="textArea" class="control-label col-form-label-sm">Extracted references</label>
-                      </div>
-                      <div class="col-lg-8">
-                        <button id="download" type="button" class="btn btn-success btn-sm" disabled>Download</button>
-                        <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-success btn-sm" disabled>Copy to clipboard</button>
-                        <div class="btn-group">
-                          <button id="zotero_item_selection_button" type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
-                            Select in Zotero <span class="caret"></span>
-                          </button>
-                          <ul class="dropdown-menu" id="zotero_item_selection_link_list"></ul>
-                        </div>
-                      </div>
-                      <div class="col-lg-12" style="padding-left:0px;">
-                        <textarea id="textArea" class="form-control form-control-sm" rows="3" readonly style="margin-top: 10px;"></textarea>
-                      </div>
+                    <div class="col-lg-8">
+                      <select id="output_format" class="form-select form-select-sm">
+                        <option value="data" selected>CSL JSON</option>
+                        <option value="data-with-counts">CSL JSON (with cite counts)</option>
+                        <option value="bibtex">BibTeX</option>
+                        <option value="ris">RIS</option>
+                        <option value="bibliography">APA references</option>
+                        <option value="bibliography-with-counts">APA references (with cite counts, tab-separated)</option>
+                      </select>
                     </div>
-                  </form>
-                </div>
+                  </div>
+                  <div class="row">
+                    <div class="offset-lg-3 col-lg-8">
+                      <button id="download" type="button" class="btn btn-success btn-sm" disabled>Download</button>
+                      <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-success btn-sm" disabled>Copy to clipboard</button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12" style="padding-left:0px;">
+                      <textarea id="textArea" class="form-control form-control-sm" rows="3" readonly style="margin-top: 10px;"></textarea>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -195,7 +187,7 @@
 
   <footer class="footer mt-auto py-3">
     <div class="container">
-      <span class="text-muted">Created by <a href="https://rintze.zelle.me/" target="_blank">Rintze M. Zelle</a> (<a href="https://genomic.social/@rintze_zelle" target="_blank"><img src="images/mastodon-logo-purple.svg" width="25" height="25" alt="Rintze Zelle's Mastodon profile"></a>).
+      <span class="text-muted">Created by <a href="https://rintze.zelle.me/" target="_blank">Rintze M. Zelle</a> (<a href="https://genomic.social/@rintze_zelle" target="_blank"><img src="images/mastodon-logo-purple.svg" width="20" height="20" alt="Rintze Zelle's Mastodon profile"></a>).
         Powered by GitHub Pages. <a href="https://github.com/rmzelle/ref-extractor/">Code</a> on GitHub.</span>
     </div>
   </footer>
