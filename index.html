@@ -45,7 +45,7 @@
       <div class="row my-3">
         <div class="col-lg-8">
           <p><strong>Reference Extractor</strong> is an online tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word and LibreOffice documents.
-            See the bottom of this page for instructions.</p>
+            Scroll down for detailed instructions.</p>
           <hr>
           <br>
           <div class="container">
@@ -76,7 +76,7 @@
                       <label for="selected_style">CSL style selected in document</label>
                     </div>
                   </div>
-                  <div class="offset-lg-3 btn-group">
+                  <div class="btn-group">
                     <button id="zotero_item_selection_button" type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
                       Select in Zotero <span class="caret"></span>
                     </button>
@@ -115,42 +115,44 @@
           </div>
           <hr>
           <h4>About Reference Extractor</h4>
-          <p>Reference Extractor is free online tool that allows you to extract references from Word (.docx) and LibreOffice (.odt) documents that have been inserted with
+          <h5>Features</h5>
+          <p>Reference Extractor is free online tool for extracting references from Word (.docx) and LibreOffice (.odt) documents that have been inserted with
              the Zotero or Mendeley word processor plugins.</p>
-          <p>This can be handy if you lost access to your Zotero/Mendeley library but still have your documents. In this case, you can use Reference Extractor to recover
-             the items you cited in your documents, and import them back into your reference manager. Or maybe you received a document from somebody else, and you would
+          <p>This can be handy if you lost access to your Zotero or Mendeley library but still have your documents. In this case, you can use Reference Extractor to recover
+             the items cited in your documents, and import them back into your reference manager. Or maybe you received a document from somebody else, and you would
              like to import the cited items into your own reference manager library.</p>
-          <p>In addition, if you have document in which you cited items from your own Zotero library in a document, you can use
-            Reference Extractor to select these cited items in your Zotero library. You can then e.g. add these items to a collection or apply a tag to them.</p>
+          <p>If you have document with items from your own Zotero library, you can also use
+            Reference Extractor to select these items in your Zotero library. You can then e.g. add these items to a collection or apply a tag to them.</p>
           <h5>Limitations</h5>
-          <p>To make sure Reference Manager is the right tool for you, let's go over its main limitations. It cannot:</p>
+          <p>Note that Reference Manager:</p>
           <ul>
-            <li>extract references from document formats other than .docx and .odt</li>
-            <li>extract references that were inserted with other reference managers</li>
-            <li>extract plain-text references</li>
+            <li>can only extract references from documents in the .docx and .odt formats</li>
+            <li>can only extract references that were inserted with the reference managers Zotero and Mendeley</li>
+            <li>cannot extract plain-text references</li>
           </ul>
-          <p>If you aren't sure what reference manager was used to insert references, or if they are plain-text or not, you can just give Reference Manager a try and see if it finds any references.
+          <p>If you aren't sure what reference manager was used to insert references, or if the references are plain-text or not, you can just give Reference Manager a try and see if it finds any references.
             Alternatively, you can verify that the references in the document consist of <a href="https://www.zotero.org/support/kb/word_field_codes">active field codes</a>. Whereas plain-text
             citations look and behave like regular text, active field codes have grey shading by default, and can be toggled by pressing <kbd>Alt</kbd>+<kbd>F9</kbd> (PC) or <kbd>Option</kbd>+<kbd>F9</kbd> (Mac)
             in a Word document. When toggled, Zotero and Mendeley active field codes (and any other field codes) will expand and show their embedded metadata.
             Toggled Zotero fields start with "ADDIN ZOTERO_ITEM CSL_CITATION", and toggled Mendeley fields start with "ADDIN CSL_CITATION".</p>
-          <p>In addition, if you import extracted references into Zotero or Mendeley, these programs won't recognize that these newly imported items match the items in your document.
-            To establish these links, you need to manually replace each citation in your document with the matching imported item.
+          <p>Also note that, if you import your extracted references into Zotero or Mendeley, that these programs won't recognize that these newly imported items match the items in your document.
+            To establish these links, manually replace each citation in your document with the matching imported item.
           </p>
           <p>If you aren't sure Reference Extractor is a good fit, make sure to review Zotero's listing of <a href="https://www.zotero.org/support/kb/importing_formatted_bibliographies">alternative tools</a>.</p>
           <h5>What about my privacy?</h5>
           <p>Reference Extractor is private and secure. The extraction is performed locally in your web browser and can be run offline. Your documents never leave your computer.
           <h5>Is it really free?</h5>
           <p>Yes! Reference Extractor is a labor of love.
-            However, if the tool saved you time, please consider supporting me with a small <a href="https://ko-fi.com/rintzezelle">donation</a> and/or by starring (upvoting) the <a href="https://github.com/rmzelle/ref-extractor/">Reference Extractor GitHub repository</a>.</p>
-          <p>Check the <a href="https://github.com/rmzelle/ref-extractor#reference-extractor">README</a> for more information about this tool and how to use it.</p>
-          <h5>I'm ready! How do I use this tool?</h5>
+            However, if the tool saved you time, please consider supporting me with a small <a href="https://ko-fi.com/rintzezelle">donation</a> and/or by starring (upvoting) the <a href="https://github.com/rmzelle/ref-extractor/">Reference Extractor</a> GitHub repository.</p>
+          <h5>Using Reference Extractor</h5>
           <h6>Extracting a document</h6>
-          <p>Using Reference Manager is simple: start by clicking the "Choose File" button at the top of this page and select your Word or LibreOffice document.
+          <p>Start by clicking the "Choose File" button at the top of this page and select your Word or LibreOffice document.
             Reference Extractor will then automatically extract all Zotero and Mendeley references it can find.
             Items that have been cited multiple times are deduplicated, and Reference Extractor keeps track of how many times each item was cited.</p>
-          <p>If Reference Extractor was successful in extracting references, it will show the number of references it was able to extract (after deduplication) and the number of duplicates removed.
+          <p>Reference Extractor will show the number of references it was able to extract (after deduplication) and the number of duplicates removed.
             It will also show which <a href="https://citationstyles.org/">Citation Style Language</a> citation style was selected in the document.</p>
+          <h6>Selecting items in Zotero</h6>
+          <p>If the items you extracted originated from your own Zotero library, you can use the "Select in Zotero" button to select these items in your Zotero library.</p>
           <h6>Selecting an output format</h6>
           <p>You now have the option to choose between the following output formats:</p>
           <ul>
@@ -161,12 +163,13 @@
             <li>APA references</li>
             <li>APA references (with cite counts, tab-separated)</li>
           </ul>
-          <p>Extracted references are natively in the CSL JSON format, and this format is recommended if your reference manager can import it.
-            Otherwise you can select the widely supported BibTeX or RIS format. You can also generate formatted references in APA format.</p>
+          <p>If you would like to import the extracted references into a reference manager, the CSL JSON format is recommended if your reference manager supports this format.
+            Otherwise select the widely supported BibTeX or RIS format. You can also generate formatted references in APA format.</p>
           <p>Two formats include cite counts (the number of times each reference was cited in the document): "CSL JSON (with cite counts)",
             where the cite count is stored in the "note" field (named "Extra" in Zotero), and "APA references (with cite counts, tab-separated)",
             a two-column tab-separated-value format with the formatted reference in one column, and the cite count in the other.
           </p>
+          <p>After you have selected your desired output format, download or copy the extracted references to your clipboard using the respective buttons.</p>
         </div>
         <div class="col-lg-3">
           <div class="card bg-light">
