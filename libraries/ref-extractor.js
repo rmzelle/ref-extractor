@@ -506,7 +506,7 @@ function convertOutput() {
         });
         // sort by count
         renderedOutput = 'cite_count\treference\n' + bibliography
-          .sort((a, b) => { return a[0] - b[0]})
+          .sort((a, b) => { return b[0] - a[0]})
           .map(r => r[1])
           .filter(r => r != '0\t')
           .join('\n');
