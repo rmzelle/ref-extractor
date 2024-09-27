@@ -233,18 +233,13 @@ function processExtractedFields(fields) {
     var duplicateCount = identifiedCitesCount - deduplicatedCitesCount;
     var missingMetadataCount = deduplicatedCitesCount - extractedCiteCount;
     
-    var citeCountFeedback = "";
+    var citeCountFeedback = extractedCiteCount.toString();
     if (extractedCiteCount > 0) {
         savedItemsString = JSON.stringify(savedCites, null, 2);
         
         document.getElementById("textArea").setAttribute("rows", "15");
         document.getElementById("textArea").value = convertOutput();
         
-        if (extractedCiteCount == 1) {
-            citeCountFeedback = "1 reference extracted";
-        } else {
-            citeCountFeedback = savedCites.length + " references extracted";
-        }
         if (duplicateCount > 0) {
             citeCountFeedback += " (" + duplicateCount + " duplicates removed)";
         }
@@ -256,7 +251,6 @@ function processExtractedFields(fields) {
         document.getElementById("download").removeAttribute("disabled");
         document.getElementById("copy_to_clipboard").removeAttribute("disabled");
     } else {
-        citeCountFeedback = "No references extracted.";
         if (missingMetadataCount > 0) {
             citeCountFeedback += " (" + missingMetadataCount + " items without metadata)";
         }
@@ -512,7 +506,7 @@ function convertOutput() {
         });
         // sort by count
         renderedOutput = 'cite_count\treference\n' + bibliography
-          .sort((a, b) => { return a[0] - b[0]})
+          .sort((a, b) => { return b[0] - a[0]})
           .map(r => r[1])
           .filter(r => r != '0\t')
           .join('\n');

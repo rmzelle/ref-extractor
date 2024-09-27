@@ -6,18 +6,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
   <link rel="stylesheet" href="css/sticky-footer-navbar.css">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.3.0/jszip.min.js" integrity="sha256-J0jjrR5bYbE+saHyVcuvt2EIg5JAHN10VWyTHtVJV2E=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/citation-js@0.4.0-10"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/citation-js@0.7.16/build/citation.min.js" integrity="sha256-dYyJeZWOE/H9JFUZCaZ5IjGpVQOz1IJKJ50BfE7KyFI=" crossorigin="anonymous"></script>
   <style>
     .btn {
       white-space: nowrap;
@@ -38,9 +35,6 @@
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #6c757d;">
       <div class="container">
         <span class="navbar-brand mb-0 h1">Reference Extractor</span>
-        <span class="navbar-text">
-          Extract Zotero and Mendeley references from Microsoft Word and LibreOffice documents
-        </span>
       </div>
     </nav>
   </header>
@@ -50,117 +44,140 @@
     <div class="container">
       <div class="row my-3">
         <div class="col-lg-8">
-          <p><strong>Reference Extractor</strong> is a free tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word and LibreOffice documents.
-            References must have been inserted with the Zotero or Mendeley word processor plugins and must not have been converted to plain text.
-            The tool runs entirely on your own computer, keeping your documents and citations private and secure.</p>
+          <p><strong>Reference Extractor</strong> is an online tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word and LibreOffice documents.
+            Scroll down for detailed instructions.</p>
           <hr>
-          <br/>
+          <br>
           <div class="container">
-            <div class="col-lg-11 text-center">
+            <div class="offset-lg-1 col-lg-9">
               <h5>Step 1.</h5>
-              <p>Select your Word (.docx) or LibreOffice (.odt) file</p>
               <form autocomplete="off">
-                <div class="form-group">
-                  <input id="file_upload" type="file">
-                </div>
+                <label for="file_upload" class="form-label">Select your Word (.docx) or LibreOffice (.odt) file</label>
+                <input class="form-control" type="file" id="file_upload">
               </form>
             </div>
           </div>
-          <br/>
+          <br>
           <div class="container">
-            <div class="col-lg-11">
-              <h5 class="text-center">Step 2.</h5>
-              <p class="text-center">Save the extracted citations in your preferred format, or select them in your Zotero library.</p>
+            <div class="offset-lg-1 col-lg-9">
+              <h5>Step 2.</h5>
+              <p>Save the extracted references in your preferred format, or select them in your Zotero library.</p>
               <div class="container">
-                <div class="offset-lg-1">
-                  <form autocomplete="off">
-                    <div class="form-group row" style="margin-bottom:0px;">
-                      <label for="extract_count" class="col-lg-4 col-form-label col-form-label-sm">Number of extracted references</label>
-                      <div class="col-lg-8">
-                        <input type="text" readonly class="form-control-plaintext form-control-sm" id="extract_count" value="0">
-                      </div>
+                <form autocomplete="off">
+                  <div class="row mb-1" style="margin-bottom:0px;">
+                    <div class="form-floating">
+                      <input type="text" readonly class="form-control form-control-sm" id="extract_count" value="">
+                      <label for="extract_count">References found</label>
                     </div>
-                    <div class="form-group row" style="margin-bottom:0px;">
-                      <label for="selected_style" class="col-lg-4 col-form-label col-form-label-sm">CSL style selected in document</label>
-                      <div class="col-lg-8">
-                        <input type="text" readonly class="form-control-plaintext form-control-sm" id="selected_style" value="-">
-                      </div>
+                  </div>
+                  <div class="row mb-1" style="margin-bottom:0px;">
+                    <div class="form-floating">
+                      <input type="text" readonly class="form-control form-control-sm" id="selected_style" value="">
+                      <label for="selected_style">CSL style selected in document</label>
                     </div>
-                    <div class="form-group row" style="margin-bottom:0px;">
-                      <label for="output_format" class="col-lg-4 control-label col-form-label-sm">Output format</label>
-                      <select id="output_format" class="col-lg-4 custom-select custom-select-sm">
+                  </div>
+                  <div class="btn-group">
+                    <button id="zotero_item_selection_button" type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                      Select in Zotero <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="zotero_item_selection_link_list"></ul>
+                  </div>
+                  <hr>
+                  <div class="row" style="margin-bottom:4px;">
+                    <div class="col-lg-3">
+                      <label for="output_format" class="control-label col-form-label-sm">Output format</label>
+                    </div>
+                    <div class="col-lg-8">
+                      <select id="output_format" class="form-select form-select-sm">
                         <option value="data" selected>CSL JSON</option>
                         <option value="data-with-counts">CSL JSON (with cite counts)</option>
                         <option value="bibtex">BibTeX</option>
                         <option value="ris">RIS</option>
-                        <option value="bibliography">APA-style references</option>
-                        <option value="bibliography-with-counts">APA-style references (with cite counts, tab-separated)</option>
+                        <option value="bibliography">APA references</option>
+                        <option value="bibliography-with-counts">APA references (with cite counts, tab-separated)</option>
                       </select>
                     </div>
-                    <div class="form-group row">
-                      <label for="textArea" class="col-lg-4 control-label col-form-label-sm">Extracted references</label>
-                      <div class="col-lg-8" style="padding-left:0px;">
-                        <button id="download" type="button" class="btn btn-success btn-sm" disabled>Download</button>
-                        <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-success btn-sm" disabled>Copy to clipboard</button>
-                        <div class="btn-group">
-                          <button id="zotero_item_selection_button" type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
-                            Select in Zotero <span class="caret"></span>
-                          </button>
-                          <ul class="dropdown-menu" id="zotero_item_selection_link_list"></ul>
-                        </div>
-                      </div>
-                      <div class="col-lg-12" style="padding-left:0px;">
-                        <textarea id="textArea" class="form-control form-control-sm" rows="3" readonly style="margin-top: 10px;"></textarea>
-                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="offset-lg-3 col-lg-8">
+                      <button id="download" type="button" class="btn btn-success btn-sm" disabled>Download</button>
+                      <button id="copy_to_clipboard" data-clipboard-text="" type="button" class="btn btn-success btn-sm" disabled>Copy to clipboard</button>
                     </div>
-                  </form>
-                </div>
+                  </div>
+                </form>
               </div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="offset-lg-1 col-lg-11" style="padding-left:0px;">
+              <textarea id="textArea" class="form-control form-control-sm" rows="3" readonly style="margin-top: 10px;"></textarea>
             </div>
           </div>
           <hr>
           <h4>About Reference Extractor</h4>
-          <p>Reference Extractor allows you to:</p>
+          <h5>Features</h5>
+          <p>Reference Extractor is free online tool for extracting references from Word (.docx) and LibreOffice (.odt) documents that have been inserted with
+             the Zotero or Mendeley word processor plugins.</p>
+          <p>This can be handy if you lost access to your Zotero or Mendeley library but still have your documents. In this case, you can use Reference Extractor to recover
+             the items cited in your documents, and import them back into your reference manager. Or maybe you received a document from somebody else, and you would
+             like to import the cited items into your own reference manager library.</p>
+          <p>If you have document with items from your own Zotero library, you can also use
+            Reference Extractor to select these items in your Zotero library. You can then e.g. add these items to a collection or apply a tag to them.</p>
+          <h5>Limitations</h5>
+          <p>Note that Reference Manager:</p>
           <ul>
-            <li>
-              <p><strong>Extract</strong> Zotero and Mendeley references and save them to CSL JSON, BibTeX, or RIS format, or as a rendered bibliography in APA style.</p>
-              <ul>
-                <li>
-                  <p><em>Scenario 1</em>: You lost your Zotero/Mendeley library but still have your documents.
-                    Extraction allows you to recover the items you cited in your documents and import them back into your reference manager.
-                    Note that imported items won’t be linked to the items in the document you extracted them from.</p>
-                </li>
-                <li>
-                  <p><em>Scenario 2</em>: Somebody sent you a document and you would like to get the cited items into your own reference manager library.</p>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <p><strong>Select</strong> the original cited items in your existing Zotero libraries <em>[only available for Zotero]</em>.
-                Once items are selected in Zotero, you can drag the items into a new collection or apply a tag.</p>
-              <ul>
-                <li><p><em>Scenario</em>: You wish to create a collection for the items you’ve cited in a manuscript.</p></li>
-              </ul>
-            </li>
-            <li>
-              <p><strong>Count</strong> the number of times each item has been cited.</p>
-            </li>
-            <li>
-              <p><strong>Identify</strong> the <a href="https://citationstyles.org/">Citation Style Language</a> citation style used in the document.</p>
-            </li>
+            <li>can only extract references from documents in the .docx and .odt formats</li>
+            <li>can only extract references that were inserted with the reference managers Zotero and Mendeley</li>
+            <li>cannot extract plain-text references</li>
           </ul>
-          <p>Check the <a href="https://github.com/rmzelle/ref-extractor#reference-extractor">README</a> for more information about this tool and how to use it.</p>
+          <p>If you aren't sure what reference manager was used to insert references, or if the references are plain-text or not, you can just give Reference Manager a try and see if it finds any references.
+            Alternatively, you can verify that the references in the document consist of <a href="https://www.zotero.org/support/kb/word_field_codes">active field codes</a>. Whereas plain-text
+            citations look and behave like regular text, active field codes have grey shading by default, and can be toggled by pressing <kbd>Alt</kbd>+<kbd>F9</kbd> (PC) or <kbd>Option</kbd>+<kbd>F9</kbd> (Mac)
+            in a Word document. When toggled, Zotero and Mendeley active field codes (and any other field codes) will expand and show their embedded metadata.
+            Toggled Zotero fields start with "ADDIN ZOTERO_ITEM CSL_CITATION", and toggled Mendeley fields start with "ADDIN CSL_CITATION".</p>
+          <p>Also note that, if you import your extracted references into Zotero or Mendeley, that these programs won't recognize that these newly imported items match the items in your document.
+            To establish these links, manually replace each citation in your document with the matching imported item.
+          </p>
+          <p>If you aren't sure Reference Extractor is a good fit, make sure to review Zotero's listing of <a href="https://www.zotero.org/support/kb/importing_formatted_bibliographies">alternative tools</a>.</p>
+          <h5>What about my privacy?</h5>
+          <p>Reference Extractor is private and secure. The extraction is performed locally in your web browser and can be run offline. Your documents never leave your computer.
+          <h5>Is it really free?</h5>
+          <p>Yes! Reference Extractor is a labor of love.
+            However, if the tool saved you time, please consider supporting me with a small <a href="https://ko-fi.com/rintzezelle">donation</a> and/or by starring (upvoting) the <a href="https://github.com/rmzelle/ref-extractor/">Reference Extractor</a> GitHub repository.</p>
+          <h5>Using Reference Extractor</h5>
+          <h6>Extracting a document</h6>
+          <p>Start by clicking the "Choose File" button at the top of this page and select your Word or LibreOffice document.
+            Reference Extractor will then automatically extract all Zotero and Mendeley references it can find.
+            Items that have been cited multiple times are deduplicated, and Reference Extractor keeps track of how many times each item was cited.</p>
+          <p>Reference Extractor will show the number of references it was able to extract (after deduplication) and the number of duplicates removed.
+            It will also show which <a href="https://citationstyles.org/">Citation Style Language</a> citation style was selected in the document.</p>
+          <h6>Selecting items in Zotero</h6>
+          <p>If the items you extracted originated from your own Zotero library, you can use the "Select in Zotero" button to select these items in your Zotero library.</p>
+          <h6>Selecting an output format</h6>
+          <p>You now have the option to choose between the following output formats:</p>
+          <ul>
+            <li>CSL JSON</li>
+            <li>CSL JSON (with cite counts)</li>
+            <li>BibTeX</li>
+            <li>RIS</li>
+            <li>APA references</li>
+            <li>APA references (with cite counts, tab-separated)</li>
+          </ul>
+          <p>If you would like to import the extracted references into a reference manager, the CSL JSON format is recommended if your reference manager supports this format.
+            Otherwise select the widely supported BibTeX or RIS format. You can also generate formatted references in APA format.</p>
+          <p>Two formats include cite counts (the number of times each reference was cited in the document): "CSL JSON (with cite counts)",
+            where the cite count is stored in the "note" field ("Extra" in Zotero), and "APA references (with cite counts, tab-separated)",
+            a two-column tab-separated-value format with the formatted reference in one column, and the cite count in the other.
+          </p>
+          <p>After you have selected your desired output format, download or copy the extracted references to your clipboard using the respective buttons.</p>
         </div>
         <div class="col-lg-3">
           <div class="card bg-light">
             <h5 class="card-header text-white bg-info">Support</h5>
             <div class="card-body">
-              <p class="card-text">Did you find this free tool useful?</p>
-              <p class="card-text">If so, please support this open-source project. Star my <a href="https://github.com/rmzelle/ref-extractor/">GitHub repository</a>, or make a small donation:</p>
+              <p class="card-text">If this tool was useful to you, please consider making a small <a href="https://ko-fi.com/rintzezelle">donation</a>, or starring the <a href="https://github.com/rmzelle/ref-extractor/">GitHub repository</a>. Your support is much appreciated.</p>
               <div class="text-center" style="font-size: small;">
-                <a href='https://ko-fi.com/rintzezelle' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi4.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
-                <br /><br />
-                <p class="card-text">(Ko-fi supports PayPal, credit cards, and Apple Pay)</p>
+                <a href='https://ko-fi.com/rintzezelle' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi4.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com'></a>
               </div>
             </div>
           </div>
@@ -171,7 +188,7 @@
 
   <footer class="footer mt-auto py-3">
     <div class="container">
-      <span class="text-muted">Created by <a href="https://rintze.zelle.me/" target="_blank">Rintze M. Zelle</a> (<a href="https://twitter.com/rintzezelle/" target="_blank"><img src="images/Twitter_Logo_Blue.svg" width="25" height="25" alt="Rintze Zelle's Twitter" /></a>).
+      <span class="text-muted">Created by <a href="https://rintze.zelle.me/" target="_blank">Rintze M. Zelle</a> (<a href="https://genomic.social/@rintze_zelle" target="_blank"><img src="images/mastodon-logo-purple.svg" width="20" height="20" alt="Rintze Zelle's Mastodon profile"></a>).
         Powered by GitHub Pages. <a href="https://github.com/rmzelle/ref-extractor/">Code</a> on GitHub.</span>
     </div>
   </footer>
