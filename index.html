@@ -45,6 +45,7 @@
       <div class="row my-3">
         <div class="col-lg-8">
           <p><strong>Reference Extractor</strong> is an online tool to extract <a href="https://www.zotero.org/">Zotero</a> and <a href="https://www.mendeley.com/">Mendeley</a> references from Microsoft Word and LibreOffice documents.
+            Supports both <a href="https://www.mendeley.com/reference-management/mendeley-desktop">Mendeley Desktop</a> and the newer <a href="https://www.mendeley.com/reference-management/mendeley-cite">Mendeley Cite</a> Word add-in.
             Scroll down for detailed instructions.</p>
           <hr>
           <br>
@@ -127,14 +128,15 @@
           <p>Note that Reference Manager:</p>
           <ul>
             <li>can only extract references from documents in the .docx and .odt formats</li>
-            <li>can only extract references that were inserted with the reference managers Zotero and Mendeley</li>
+            <li>can only extract references that were inserted with the reference managers Zotero, Mendeley Desktop, or Mendeley Cite</li>
             <li>cannot extract plain-text references</li>
           </ul>
           <p>If you aren't sure what reference manager was used to insert references, or if the references are plain-text or not, you can just give Reference Manager a try and see if it finds any references.
             Alternatively, you can verify that the references in the document consist of <a href="https://www.zotero.org/support/kb/word_field_codes">active field codes</a>. Whereas plain-text
             citations look and behave like regular text, active field codes have grey shading by default, and can be toggled by pressing <kbd>Alt</kbd>+<kbd>F9</kbd> (PC) or <kbd>Option</kbd>+<kbd>F9</kbd> (Mac)
             in a Word document. When toggled, Zotero and Mendeley active field codes (and any other field codes) will expand and show their embedded metadata.
-            Toggled Zotero fields start with "ADDIN ZOTERO_ITEM CSL_CITATION", and toggled Mendeley fields start with "ADDIN CSL_CITATION".</p>
+            Toggled Zotero fields start with "ADDIN ZOTERO_ITEM CSL_CITATION", and toggled Mendeley Desktop fields start with "ADDIN CSL_CITATION".
+            References inserted with the newer Mendeley Cite add-in use a different storage format (web extension content controls) and are also supported.</p>
           <p>Also note that, if you import your extracted references into Zotero or Mendeley, that these programs won't recognize that these newly imported items match the items in your document.
             To establish these links, manually replace each citation in your document with the matching imported item.
           </p>

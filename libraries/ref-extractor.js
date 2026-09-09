@@ -36,7 +36,7 @@ function handleFileSelect(event) {
     
     function extractFields(xmlDocumentFile, documentType) {
         var fields = [];
-        
+
         var parsedDOM = new DOMParser().parseFromString(xmlDocumentFile, 'text/xml');
 
         if (documentType == "OfficeOpenXML") {
@@ -73,8 +73,55 @@ function handleFileSelect(event) {
                 fields.push(referenceMarks[i].getAttribute("text:name"));
             }
         }
-        
+
         return(fields);
+    }
+
+    // Extract citations from Mendeley Cite web extension XML
+    // Mendeley Cite (the Office 365 add-in) stores citation metadata in
+    // word/webextensions/webextension1.xml rather than in Word field codes.
+    // See https://github.com/rmzelle/ref-extractor/issues/39
+    function extractMendeleyCiteCitations(xmlString) {
+        var cites = [];
+        var style = "";
+        var parsedDOM = new DOMParser().parseFromString(xmlString, 'text/xml');
+        var WE_NS = "http://schemas.microsoft.com/office/webextensions/webextension/2010/11";
+        var properties = parsedDOM.getElementsByTagNameNS(WE_NS, "property");
+
+        for (let i = 0; i < properties.length; i++) {
+            var name = properties[i].getAttribute("name");
+            var value = properties[i].getAttribute("value");
+
+            if (name === "MENDELEY_CITATIONS" && value) {
+                try {
+                    var citationList = JSON.parse(value);
+                    if (Array.isArray(citationList)) {
+                        for (let j = 0; j < citationList.length; j++) {
+                            var citation = citationList[j];
+                            if (citation.hasOwnProperty("citationItems") && Array.isArray(citation.citationItems)) {
+                                for (let k = 0; k < citation.citationItems.length; k++) {
+                                    var item = citation.citationItems[k];
+                                    // Create a synthetic uris array from the item id
+                                    // so the existing deduplication logic works
+                                    if (!item.hasOwnProperty("uris") && item.hasOwnProperty("id")) {
+                                        item.uris = ["https://api.mendeley.com/items/" + item.id];
+                                    }
+                                    cites.push(item);
+                                }
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.warn("Failed to parse Mendeley Cite citations:", e);
+                }
+            }
+
+            if (name === "MENDELEY_CITATIONS_STYLE" && value) {
+                style = value.replace(/^["']+|["']+$/g, "");
+            }
+        }
+
+        return { cites: cites, style: style };
     }
 
     JSZip.loadAsync(file).then(function(zip) {
@@ -99,30 +146,55 @@ function handleFileSelect(event) {
 
         // Array intersection (per https://stackoverflow.com/a/1885569/1712389) to identify which files are present
         filesToExtract = filesInZip.filter((n) => filesToExtract.includes(n));
-        
+
         // Relied on example at https://github.com/Stuk/jszip/issues/375#issuecomment-258969023 to extract multiple files
         zipEntries = filesToExtract.map(function (name) {
             return zip.files[name];
         });
-        
+
         var listOfPromises = zipEntries.map(function(entry) {
             return entry.async("string").then(function (data) {
                 return extractFields(data, documentType);
             });
         });
-        
+
+        // Also look for Mendeley Cite web extension files (issue #39)
+        var webextFiles = filesInZip.filter(function(name) {
+            return /^word\/webextensions\/webextension\d*\.xml$/.test(name);
+        });
+        var mendeleyCiteCites = [];
+        var mendeleyCiteStyle = "";
+
+        var webextPromises = webextFiles.map(function(name) {
+            return zip.files[name].async("string").then(function(data) {
+                var result = extractMendeleyCiteCitations(data);
+                if (result.cites.length > 0) {
+                    mendeleyCiteCites = mendeleyCiteCites.concat(result.cites);
+                }
+                if (result.style) {
+                    mendeleyCiteStyle = result.style;
+                }
+            });
+        });
+
         var promiseOfList = Promise.all(listOfPromises);
-        
-        promiseOfList.then(function (list) {
+
+        Promise.all([promiseOfList, Promise.all(webextPromises)]).then(function(results) {
+            var list = results[0];
             extractedFields = list.reduce(function (accumulator, current) {
                 return accumulator.concat(current);
             }, []);
-            
-            processExtractedFields(extractedFields);
+
+            processExtractedFields(extractedFields, mendeleyCiteCites);
         });
-        
+
         // Show CSL style used in document
-        zip.file(fileWithSelectedCslStyle).async("string").then(function(data) {
+        var styleFileEntry = zip.file(fileWithSelectedCslStyle);
+        if (!styleFileEntry && mendeleyCiteStyle) {
+            document.getElementById("selected_style").setAttribute("value", mendeleyCiteStyle.replace("http://www.zotero.org/styles/","").replace("https://www.zotero.org/styles/",""));
+        }
+        if (!styleFileEntry) return;
+        styleFileEntry.async("string").then(function(data) {
             var parsedDOM = new DOMParser().parseFromString(data, 'text/xml');
             var selectedCSLStyle = "";
             
@@ -130,7 +202,7 @@ function handleFileSelect(event) {
             var selectedZoteroCSLStyle = extractZoteroCSLStyle(parsedDOM, documentType);
             
             // Only use delimiter if both strings have non-zero lengths; https://stackoverflow.com/a/19903533/1712389
-            selectedCSLStyle = [selectedMendeleyCSLStyle, selectedZoteroCSLStyle].filter(val => val).join(', ');
+            selectedCSLStyle = [selectedMendeleyCSLStyle, selectedZoteroCSLStyle, mendeleyCiteStyle].filter(val => val).join(', ');
             
             function extractMendeleyCSLStyle(customXmlDOM) {
               var selectedStyle = "";
@@ -192,13 +264,13 @@ function handleFileSelect(event) {
     });
 }
 
-function processExtractedFields(fields) {
+function processExtractedFields(fields, mendeleyCiteCites) {
     // Isolate CSL cites
     var savedCites = [];
 
     for (var i = 0; i < fields.length; i++) {
       var field = fields[i].trim();
-      
+
       // Check that field is a Zotero or Mendeley field
       // Mendeley fields are prefixed with "ADDIN CSL_CITATION"
       // In Word files, Zotero fields are prefixed with "ADDIN ZOTERO_ITEM CSL_CITATION"
@@ -208,7 +280,7 @@ function processExtractedFields(fields) {
         field = field.replace(cslFieldPrefix,"").trim();
         // if there is some kind of hash after the JSON, keep only the JSON
         field = field.replace(/(\{.+\}) [0-9A-Za-z]+$/, '$1');
-        
+
         // parse rest of field content as JSON
         try {
           var fieldObject = {};
@@ -222,6 +294,11 @@ function processExtractedFields(fields) {
         }
         catch (e) {}
       }
+    }
+
+    // Merge in any Mendeley Cite citations (from webextension XML, issue #39)
+    if (mendeleyCiteCites && mendeleyCiteCites.length > 0) {
+      savedCites = savedCites.concat(mendeleyCiteCites);
     }
     
     var identifiedCitesCount = savedCites.length;
